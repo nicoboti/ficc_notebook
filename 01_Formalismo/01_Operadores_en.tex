@@ -1,0 +1,3385 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Keep aspect ratio if custom image width or height is specified
+    \setkeys{Gin}{keepaspectratio}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{soul}      % strikethrough (\st) support for pandoc >= 3.0.0
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \makeatletter
+    \newsavebox\pandoc@box
+    \newcommand*\pandocbounded[1]{%
+      \sbox\pandoc@box{#1}%
+      % scaling factors for width and height
+      \Gscale@div\@tempa\textheight{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+      \Gscale@div\@tempb\linewidth{\wd\pandoc@box}%
+      % select the smaller of both
+      \ifdim\@tempb\p@<\@tempa\p@
+        \let\@tempa\@tempb
+      \fi
+      % scaling accordingly (\@tempa < 1)
+      \ifdim\@tempa\p@<\p@
+        \scalebox{\@tempa}{\usebox\pandoc@box}%
+      % scaling not needed, use as it is
+      \else
+        \usebox{\pandoc@box}%
+      \fi
+    }
+    \makeatother
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{01\_Operadores\_en}
+    
+    
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@ges}{\let\PY@bf=\textbf\let\PY@it=\textit}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    Operators
+
+\$
+
+\newcommand{\bra}[1]{\langle #1|}
+
+\$ \$
+
+\newcommand{\ket}[1]{|#1\rangle}
+
+\$ \$
+
+\newcommand{\braket}[2]{\langle #1|#2\rangle}
+
+\$ \$
+
+\newcommand{\ketbra}[2]{| #1\rangle  \langle #2|}
+
+\$ \$ \newcommand{\tr}{{\rm tr}} \$ \$ \newcommand{\i}{{\color{blue} i}}
+\$ \$ \newcommand{\Tr}{{\rm Tr}\,} \$ \$ \newcommand{\Hil}{{\cal H}} \$
+\$ \newcommand{\V}{{\cal V}} \$ \$ \newcommand{\Lin}{\hbox{Lin}} \$
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{sys}
+\PY{n}{sys}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{../}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{macro\PYZus{}tQ}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{tQ}
+
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{linalg}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{la}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{IPython}\PY{n+nn}{.}\PY{n+nn}{display}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{display}\PY{p}{,}\PY{n}{Markdown}\PY{p}{,}\PY{n}{Latex}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{qiskit}\PY{n+nn}{.}\PY{n+nn}{visualization}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{array\PYZus{}to\PYZus{}latex}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{itemize}
+\item
+  \hyperref[opdefi]{Operators and matrices}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \hyperref[matriz_op]{Matrix of an operator}\\
+  \end{itemize}
+\item
+  \hyperref[op_basis]{Basis of operators}
+
+  \begin{itemize}
+  \item
+    \hyperref[prod_ext]{Outer product}
+  \item
+    \hyperref[base_can]{Canonical basis}
+  \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+\item
+  \hyperref[linh]{El espacio vectorial Lin(\Hil)}
+
+  \begin{itemize}
+  \item
+    \hyperref[op_class]{Classes of operators}
+
+    \begin{itemize}
+    \item
+      \hyperref[opadj]{Adjoint operator}
+    \item
+      \hyperref[opunit]{Unitary perator}
+    \item
+      \hyperref[opnormal]{Normal operador}
+    \item
+      \hyperref[opermit]{Hermitian operator}
+    \item
+      \hyperref[opproyec]{Proyectors}
+    \end{itemize}
+  \end{itemize}
+\item
+  \hyperref[eigen]{Eigenvalues and eigenvectors}
+
+  \begin{itemize}
+  \item
+    \hyperref[subesprop]{Eigenspaces}
+  \item
+    \hyperref[especope]{Spectrum of operators}
+  \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+\item
+  \hyperref[op_decomp]{Operator decompositions}
+
+  \begin{itemize}
+  \item
+    \hyperref[spec_dec]{Spectral Decomposition}
+  \item
+    \hyperref[pol_dec]{Polar decomposition}
+  \item
+    \hyperref[svd_dec]{Singular Value Decomposition (SVD)}
+  \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+\item
+  \hyperref[optrace]{Operator trace}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \hyperref[linhil]{Lin(\Hil) as a Hilbert space}
+  \item
+    \hyperref[op_norm]{Operator norm and distance}
+  \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+\tightlist
+\item
+  \hyperref[lin_map]{Linear Maps}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \hyperref[class_lin_map]{Classes of linear maps}
+  \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+\tightlist
+\item
+  \hyperref[func_op]{Functions of operators}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \hyperref[anal_fun]{Analytic functions}
+  \item
+    \hyperref[gen_func]{General functions}
+  \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+\tightlist
+\item
+  \hyperref[paulis]{Pauli matrices}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \hyperref[pauli_alg]{Pauli Algebra}
+  \end{itemize}
+\end{itemize}
+
+    \# Operators and Matrices
+
+\hyperref[top]{<<<}
+
+    In a vector space, besides the vectors themselves, it is essential to
+understand the different ways in which they can be \textbf{transformed}
+into one another,
+
+    
+
+    Linearity refers to the following property:
+
+\[
+A: (\alpha\ket{u} + \beta\ket{w})~~\to ~~ \ket{v} = \alpha A\ket{u} + \beta A\ket{w}
+\]
+
+    
+
+    Example: An operator easy to visualize is the rotation operator in a
+plane. Given an angle \(\theta \in (0,2\pi)\), the operator
+\(A = R(\theta)\) rotates any vector by an angle \(\theta\)
+counterclockwise. A vector in the plane \({\bf u} = (u_1, u_2)\) is
+equivalent to the complex number \(u = u_1 + i u_2\) in the complex
+plane \(V = \mathbb{C}\).
+
+Written in polar form, \(u = |u| e^{i\phi}\), and we know that a
+rotation by an angle \(\theta\) is equivalent to adding this angle to
+the phase: \[
+v = R(\theta) u = |u| e^{i(\phi + \theta)} = |u| e^{i\phi} e^{i\theta} = u \cdot e^{i\theta}
+\] \\
+Therefore, to rotate a complex number by an angle \(\theta\), it is
+enough to multiply it by the phase factor \(e^{i\theta}\), which
+corresponds to the operator \(R(\theta)\) in the vector space
+\(V = \mathbb{C}\).
+
+The fundamental property of a rotation is to keep the modulus invariant,
+\(|v| = |u|\).
+
+    Exercise 1.3.1
+
+Using the previous example, define a function \(R\) that receives a
+vector in the plane \((u_1,u_2)\) and returns the vector \((v_1,v_2)\)
+with components rotated by an angle \(\theta\).
+
+\begin{quote}
+\begin{quote}
+Solution
+\end{quote}
+\end{quote}
+
+```python def R(u1, u2, theta): u = u1 + u2\emph{1j v = u } np.exp(1j *
+theta) \# u rotated by angle theta return v.real, v.imag
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}ángulo que queremos rotar\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{n}{theta}\PY{o}{=}\PY{l+m+mf}{0.6} 
+
+\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}vector a rotar\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{n}{u1}\PY{o}{=}\PY{l+m+mf}{2.}
+\PY{n}{u2}\PY{o}{=}\PY{l+m+mf}{2.}
+
+\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}v1 y v2 a partir de u1, u2 y theta\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{R}\PY{p}{(}\PY{n}{u1}\PY{p}{,}\PY{n}{u2}\PY{p}{,}\PY{n}{theta}\PY{p}{)}\PY{p}{:}
+        \PY{n}{u} \PY{o}{=} \PY{n}{u1} \PY{o}{+} \PY{n}{u2}\PY{o}{*}\PY{l+m+mi}{1}\PY{n}{j}
+        \PY{n}{v} \PY{o}{=} \PY{n}{u}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{l+m+mi}{1}\PY{n}{j}\PY{o}{*}\PY{n}{theta}\PY{p}{)} \PY{c+c1}{\PYZsh{} u rotado un angulo theta}
+        \PY{k}{return} \PY{n}{v}\PY{o}{.}\PY{n}{real}\PY{p}{,}\PY{n}{v}\PY{o}{.}\PY{n}{imag}
+    
+\PY{n}{v1}\PY{p}{,}\PY{n}{v2} \PY{o}{=}  \PY{n}{R}\PY{p}{(}\PY{n}{u1}\PY{p}{,}\PY{n}{u2}\PY{p}{,}\PY{n}{theta}\PY{p}{)}
+
+\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{} Representación en el plano complejo \PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{n}{v} \PY{o}{=} \PY{n}{v1}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{+}\PY{n}{v2}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}
+\PY{n}{tQ}\PY{o}{.}\PY{n}{plot\PYZus{}2D\PYZus{}plane}\PY{p}{(}\PY{n}{left}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{n+nb}{int}\PY{p}{(}\PY{n+nb}{abs}\PY{p}{(}\PY{n}{v1}\PY{p}{)}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{right}\PY{o}{=}\PY{n+nb}{int}\PY{p}{(}\PY{n+nb}{abs}\PY{p}{(}\PY{n}{v1}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{up}\PY{o}{=}\PY{n+nb}{int}\PY{p}{(}\PY{n+nb}{abs}\PY{p}{(}\PY{n}{v2}\PY{p}{)}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{down}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{n+nb}{int}\PY{p}{(}\PY{n+nb}{abs}\PY{p}{(}\PY{n}{v2}\PY{p}{)}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{tQ}\PY{o}{.}\PY{n}{draw\PYZus{}vector}\PY{p}{(}\PY{n}{u1}\PY{p}{,}\PY{n}{u1}\PY{p}{,}\PY{n}{vcolor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{tQ}\PY{o}{.}\PY{n}{draw\PYZus{}vector}\PY{p}{(}\PY{n}{v1}\PY{p}{,}\PY{n}{v2}\PY{p}{,}\PY{n}{vcolor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{01_Operadores_en_files/01_Operadores_en_10_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsection{Matrix of an operator}\label{matrix-of-an-operator}
+
+    \emph{Given a basis} \(\ket{i}\)
+
+\(\Rightarrow\) a vector is specified by a \emph{column of components}
+
+\[
+\ket{v} \sim \begin{pmatrix} v_1 \\ v_2\\ \vdots \\ v_N\end{pmatrix}
+\]
+
+    \(\Rightarrow\) an operator is defined by a \emph{matrix of components}.
+
+\[
+A \sim \begin{pmatrix} 
+A_{11} & A_{12} & \cdots & A_{1N} \\
+A_{21} & A_{22} & \cdots & A_{2N} \\
+\vdots & \vdots &  \ddots      & \vdots \\
+A_{N1} & A_{N2} &    \cdots    & A_{NN}
+\end{pmatrix}
+\]
+
+    Indeed, in a basis, the relation \(\ket{v} = A\ket{u}\) is equivalent to
+an equation relating the components of both vectors.
+
+\[
+v_i = \sum_{j=1}^N A_{ij} u_j  \, .
+\]
+
+    This operation corresponds to the following matrix multiplication:
+
+\[
+\begin{pmatrix}
+v_1 \\ v_2 \\ \vdots \\ v_N \end{pmatrix} =  \begin{pmatrix} 
+A_{11} & A_{12} & \cdots & A_{1N} \\
+A_{21} & A_{22} & \cdots & A_{2N} \\
+\vdots & \vdots &  \ddots      & \vdots \\
+A_{N1} & A_{N2} &    \cdots    & A_{NN}
+\end{pmatrix}
+ \begin{pmatrix} 
+u_1 \\ u_2 \\ \vdots \\ u_N\end{pmatrix} \hspace{4cm}
+\]
+
+    \begin{verbatim}
+<b>Example:</b> 
+\end{verbatim}
+
+Continuing with the example of the rotation operator in a plane, we have
+seen that the components of \(u = u_1 + i u_2\) and of
+\(R(\theta)u = v = v_1 + i v_2\) are obtained by multiplication by a
+pure phase: \begin{eqnarray}
+v &=& u e^{i\theta} \\
+\end{eqnarray}
+
+Let's develop each side in Cartesian coordinates, separating the real
+and imaginary parts: \\
+\begin{eqnarray}
+v_1 + i v_2 &=& (u_1 + i u_2)(\cos \theta + i \sin \theta)  \\
+    \rule{0mm}{6mm}
+    &=& (\cos\theta \, u_1 - \sin \theta\,  u_2) + i(\sin\theta\,  u_1 + \cos \theta\,  u_2)
+\end{eqnarray}
+
+That is, the coordinates of the original vector and the rotated image
+vector are related as
+
+\begin{eqnarray}
+v_1 = \cos\theta \, u_1 - \sin \theta\,  u_2 ~~~~~~~,~~~~~~~~
+v_2 = \sin\theta \, u_1 + \cos \theta\,  u_2     
+\end{eqnarray}
+
+which can be expressed in matrix form as
+
+\[
+\begin{pmatrix} v_1 \\ v_2 \end{pmatrix} = \begin{pmatrix} \cos\theta & -\sin\theta \\ \sin\theta & \cos\theta \end{pmatrix} \begin{pmatrix} u_1 \\ u_2 \end{pmatrix}
+\]
+
+    \section{Basis of Operators}\label{basis-of-operators}
+
+\hyperref[top]{<<<}
+
+    \#\# Outer Product
+
+Depending on the order in which we compose them, \(~\braket{u}{v}~\) or
+\(~\ketbra{v}{u}~\), the result is very different
+
+\begin{itemize}
+\tightlist
+\item
+  The \textbf{inner product}, or \emph{scalar product}, is a
+  \emph{complex number}
+\end{itemize}
+
+\[
+ a = \braket{u}{v} = \braket{v}{u}^* 
+\]
+
+\begin{itemize}
+\tightlist
+\item
+  The \textbf{outer product} is an \emph{operator}
+\end{itemize}
+
+\[
+A = \ketbra{v}{u}
+\]
+
+    To understand why it is an operator, we observe that this expression
+applied to a vector \(\ket{w}\) gives another vector,
+
+\[
+A : \ket{w} ~\to ~ A\ket{w} =  \ket{v}\braket{u}{w} = \ket{v} b = b \ket{v} 
+\]
+
+    Note: 1. The order in which we write things is very important. \\
+\(\Rightarrow\) \(\braket{u}{v}\) and \(\ketbra{v}{u}\) are radically
+different objects: the first is a number and the second is an operator.
+\\
+\strut \\
+\(\Rightarrow\) On the other hand, \(\ket{v} b = b \ket{v}\), as well as
+\(\bra{u} b = b \bra{u}\), that is, complex numbers and \(kets\) or
+\(bras\) can be written in any order (we say they commute). 2. The
+action of the operator \(A = \ket{v}\bra{u}\) is very easy to describe
+in words:
+
+\begin{itemize}
+\tightlist
+\item
+  The operator \(A\) takes any vector \(\ket{w}\) and converts it into a
+  vector parallel to \(\ket{v}\), proportional to its projection
+  \(b = \braket{u}{w}\). \\
+\item
+  If the projection is zero \(b=0\), the operator annihilates, that is,
+  it gives the neutral element.
+\end{itemize}
+
+    \subsubsection{Outer product in
+components}\label{outer-product-in-components}
+
+The difference between the \emph{inner product} \(a = \braket{u}{v}\)
+and the \emph{outer product} \(A = \ketbra{u}{v}\) is reflected in a
+basis by expressing both vectors, \(\ket{u} = \sum_i u_i \ket{i}\) and
+\(\ket{v} = \sum_j v_j \ket{j}\), in components in an orthonormal basis.
+
+\begin{itemize}
+\tightlist
+\item
+  The \emph{complex number} \(a\) is the \emph{scalar product}
+\end{itemize}
+
+\[
+a = \braket{u}{v} = \begin{pmatrix} u_1^*, ..., u_N^* \end{pmatrix}
+\begin{pmatrix} v_1 \\ \vdots \\ v_N \end{pmatrix} = \sum_i u_i^* v_i
+\]
+
+    \begin{itemize}
+\tightlist
+\item
+  The matrix \(A_{ij}\) \emph{represents} the operator \(A\) in the
+  basis \(\{\ket{i} = \ket{e_i}\}\)
+\end{itemize}
+
+\[
+A = \ketbra{v}{u} ~\sim ~\begin{pmatrix} v_1 \\ \vdots \\ v_N\end{pmatrix}
+\begin{pmatrix} u_1^*,...,u_N^*\end{pmatrix} ~=~ 
+\begin{pmatrix} v_1 u_1^* & v_1u_2^* & ... & v_1 u_N^* \\
+v_2 u_1^* & v_2 u_1^*& ... & v_2 u_N^* \\ \vdots & \vdots  & \ddots & \vdots \\
+v_N u_1^* & & ... & v_N u_N^* \end{pmatrix} ~ = ~A_{ij}
+\]
+
+    \#\# Canonical basis of operators
+
+Consider the \emph{outer product} of two elements of the orthonormal
+basis \(\ketbra{i}{j}\)
+
+\begin{itemize}
+\tightlist
+\item
+  The action of \(\ketbra{i}{j}\) on another vector, \(\ket{k}\), of the
+  basis is simple:
+\end{itemize}
+
+\[
+ \ket{i}\braket{j}{k} = \ket{i} \delta_{jk} = \left\{ \begin{array}{rl}
+0 & {\rm if} ~~ k \neq j \\ \ket{i} & {\rm if} ~~ k = j \end{array} \right.
+\]
+
+    \begin{itemize}
+\tightlist
+\item
+  The matrix associated with the operator has only a 1 in the \((i,j)\)
+  element and zeros everywhere else. For example, suppose \(N=4\)
+\end{itemize}
+
+\[
+\ketbra{2}{3} ~\to ~~
+ \begin{pmatrix} 0 \\ 1 \\ 0 \\ 0 \end{pmatrix}\begin{pmatrix} 0 & 0 & 1 & 0 \end{pmatrix} = 
+\begin{pmatrix}
+0 &  0 & 0 &  0 \\  0 &  0 & 1&  0 \\ 0 &  0 & 0 &  0 \\ 0 &  0 & 0 &  0
+\end{pmatrix} ~~\Rightarrow ~~ A_{ij} = \delta_{i2}\delta_{j3}
+\]
+
+    The matrix elements \(A_{ij}\) express the components of an operator in
+the operator basis \(\ketbra{i}{j}\).
+
+    \[
+A ~=~ \sum_{i,j=1}^N A_{ij} \ketbra{i}{j} 
+\]
+
+    \begin{quote}
+\begin{quote}
+Consistency
+
+Let's verify that it acts correctly \[
+\begin{array}{rcl}
+A |u\rangle &=&  \sum_{i,j} A_{ij} \ketbra{i}{j}  \left(\sum_k u_k |k\rangle \right) \\
+&\stackrel{\rm linealidad}{=} \rule{0mm}{6mm}& \sum_{i,j} \sum_k A_{ij} | i\rangle  \,   u_k \langle j| k\rangle \nonumber\\
+&\stackrel{\rm ortonormalidad}{=}\rule{0mm}{6mm}& \sum_{i,j,k} A_{ij} | i\rangle  \,   u_k \delta_{jk}\\
+&=\rule{0mm}{6mm}&\sum_{ij} A_{ij}\,|i\rangle \, u_j= \sum_i \left(\sum_{j} A_{ij}\, u_j\right)  |i\rangle    \\
+&=\rule{0mm}{6mm}&\sum_i v_i \ket{i} \nonumber\\
+&=\rule{0mm}{6mm}&   | v\rangle
+\end{array}
+\]
+\end{quote}
+\end{quote}
+
+    \subsubsection{Matrix elements}\label{matrix-elements}
+
+In the same way that we obtained the components of a vector by
+projecting onto a basis element
+
+\[
+v_i = \braket{i}{v}
+\]
+
+we can now obtain the \emph{matrix elements} of an operator \(A\) as
+
+\[
+A_{ij} = \bra{i} A \ket{j}
+\]
+
+    Exercise 1.3.2 Check the consistency of the expressions
+\$\textasciitilde A = \sum\emph{\{i,j=1\}\^{}N A}\{ij\} \ketbra{i}{j} \$
+and \(~A_{ij} = \bra{i} A \ket{j}\)
+
+\begin{quote}
+\begin{quote}
+Solution:
+
+Here is your solution
+\end{quote}
+\end{quote}
+
+    Summary: \\
+Given a basis \(\{\ket{i}\}\), we can express an operator through a
+matrix \(A_{ij}\). The precise relation is - as an operator
+\(\to ~ A = \sum_{ij} A_{ij} \ketbra{i}{j}\) \\
+- as a matrix element \(\to ~ A_{ij} = \bra{i} A \ket{j}\)
+
+    \subsubsection{Change of basis}\label{change-of-basis}
+
+Two orthonormal bases \(\ket{e_i}\) and \(\ket{\tilde e_i}\) are
+linearly related by a matrix
+
+\[
+\ket{e_j} \to \ket{\tilde e_j} = \sum_{i} U_{ij} \ket{e_i}
+\]
+
+The \emph{adjoint} relation is straightforward to obtain:
+
+\[
+\bra{e_j} \to \bra{\tilde e_j} = \sum_i U^*_{ij} \bra{e_i}
+\]
+
+    In each basis, an operator \(A\) is \emph{represented} by different
+matrix elements
+
+\[
+A_{ij} = \bra{e_i} A \ket{e_j} ~~~~,~~~~~ \tilde{A}_{ij} = \bra{\tilde{e}_i} A \ket{\tilde{e}_j} \, .
+\]
+
+    We can find the relation by substituting the change of basis
+
+\begin{eqnarray}
+\tilde A_{ij} &=& \bra{\tilde e_i} A \ket{\tilde e_j} \\ \rule{0mm}{8mm}
+&=& \sum_{k}U^*_{ki}\bra{e_k} ~A~ \sum_l U_{lj}\ket{e_l} \\ 
+&=&  \sum_{k,l} U^\dagger_{ik}\bra{e_k} A  \ket{e_l}U_{lj}   = \sum_{k,l} U^\dagger_{ik}A_{kl} U_{lj} \, .
+\end{eqnarray}
+
+    Lemma : \\
+Under a change of orthonormal bases \$ \ket{e_j} \to \ket{\tilde e_j} =
+\sum\emph{\{i\} U}\{ij\} \ket{e_i}\$, the components of a vector
+\(\ket{v}\) and of an operator \(A\) change according to the rule:
+
+\strut \\
+\begin{eqnarray}
+\tilde v_i &=& (U^\dagger \cdot v)_i \\ \rule{0mm}{12mm}
+\tilde A_{ij} &=& (U^\dagger \cdot A \cdot U)_{ij}
+\end{eqnarray}
+
+    Note: \\
+The mnemonic rule is that columns are multiplied by \(U^\dagger \cdot\)
+and rows by \(\cdot\, U\)
+
+\[
+\begin{pmatrix} \tilde v_1 \\ \vdots \\ \tilde v_N \end{pmatrix} = 
+U^\dagger \cdot \begin{pmatrix} v_1 \\ \vdots \\  v_N \end{pmatrix} ~~~~
+~~~~~~~;~~~~~~~~
+\begin{pmatrix} 
+\tilde A_{11} & \cdots & \tilde A_{1N} \\
+\tilde \vdots & \ddots & \vdots  \\
+\tilde A_{N1} & \cdots & \tilde A_{NN} 
+\end{pmatrix} 
+ =  U^\dagger\cdot
+ \overbrace{\begin{pmatrix} 
+ A_{11} & \cdots &  A_{1N} \\
+\tilde \vdots & \ddots & \vdots  \\
+ A_{N1} & \cdots &  A_{NN} 
+\end{pmatrix} }^{\large \cdot ~ U}
+\]
+
+    Exercise 1.3.3\(~\)
+
+Write a function \(basis\_change\) that receives a change of basis
+matrix \(U_{ij}\) with \(\ket{\tilde e_j} = \sum_i U_{ij} \ket{e_i}\),
+the components \(v_i\) of a vector, or \(A_{ij}\) of an operator, and
+returns the components \(\tilde v_i\) or \(\tilde A_{ij}\) in the new
+basis.
+
+solution
+
+Exercise 1.3.4\(~\)
+
+The matrix \(\begin{pmatrix} 0 & -i \\ i & 0 \end{pmatrix}\) represents
+an operator \(\sigma_y\) in the basis \(\{\ket{0}, \ket{1}\}\). Write
+\(\sigma_y\) in the basis
+\(\{\ket{+i} = \frac{1}{\sqrt{2}}(\ket{0} + i \ket{1}), \ket{-i} = \frac{1}{\sqrt{2}}(\ket{0} - i \ket{1})\}\).
+
+solution
+
+    \subsubsection{Completeness relation}\label{completeness-relation}
+
+The action of the identity operator is
+
+\[
+I \ket{v} = \ket{v}
+\]
+
+In particular, on every basis element \(I \ket{i} = \ket{i}\). In other
+words,\\
+the identity operator \(I\) has matrix elements
+\(I_{ij} = \delta_{ij} = \text{diagonal}(1,1,\ldots,1)\), so that
+
+\[
+I = \sum_i \ketbra{i}{i} = \sum_{ij} \delta_{ij} \ketbra{i}{j}
+\]
+
+This expression is also known as the completeness relation or the
+closure relation and is used very frequently.
+
+    Note: The completeness relation is, in fact, a property of any basis.
+
+In other words, if \(\{\ket{e_i}\}\) and \(\{\ket{\tilde e_i}\}\) are
+both bases, then \(I \ket{e_i} = \ket{e_i}\) and
+\(I \ket{\tilde e_j} = \ket{\tilde e_j}\), so \(+1\) is the only
+eigenvalue of \(I\) in any basis, and the spectral decomposition gives
+\[
+I = \sum_i \ketbra{e_i}{e_i} = \sum_j \ketbra{\tilde e_j}{\tilde e_j} \, .
+\]
+
+    The closure, or completeness, relation can \textbf{always be inserted}
+at any step of a calculation. It is frequently used to perform changes
+of basis.
+
+    For example, let's see that the inner product \(\braket{u}{v}\) can be
+calculated in any basis.
+
+Let
+\(\ket{u} = \sum_i u_i \ket{e_i} = \sum_i \tilde u_i \ket{\tilde e_i}~~\)
+and \(~~
+\ket{v} = \sum_i v_i \ket{e_i} = \sum_i \tilde v_i \ket{\tilde e_i}\)
+
+    Then
+
+\[ 
+\braket{v}{u} = \bra{v} I \ket{u} = \bra{v}\left(\sum_i\ketbra{e_i}{e_i}\right)\ket{u} = 
+\sum_i \braket{v}{e_i}\braket{e_i}{u} = \sum_i v_i^* u_i
+\] \[ 
+\braket{v}{u} = \bra{v} I \ket{u} = \bra{v}\left(\sum_i\ketbra{\tilde e_i}{\tilde e_i}\right)\ket{u} = 
+\sum_i \braket{v}{\tilde e_i}\braket{\tilde e_i}{u} = \sum_i \tilde v_i^* \tilde u_i
+\]
+
+    \section{\texorpdfstring{\(\Lin(\Hil)\) as a vector
+space}{\textbackslash Lin(\textbackslash Hil) as a vector space}}\label{linhil-as-a-vector-space}
+
+\hyperref[top]{<<<}
+
+    The set of \textbf{all} linear operators over a vector space \(\Hil\)
+naturally has the structure of a vector space, which we denote by
+\(\Lin(\Hil)\).
+
+    Given two operators, \(A\) and \(B\), both the sum \(C = A + B\) and the
+multiplication by a complex number \(D = \lambda A\) are \emph{new
+operators} defined by their action on any vector \(\ket{v} \in \Hil\).
+
+\[
+C\ket{v} ~=~ (A + B) \ket{v} = A\ket{v} + B\ket{v}
+\]
+
+\[
+D\ket{v} ~=~ (\lambda A) \ket{v} = \lambda (A\ket{v})
+\]
+
+    \#\# Adjoint operator
+
+The \emph{adjoint} conjugation can be extended to \({\rm Lin}(\Hil)\)
+
+\[
+\dagger ~\to ~
+\left\{
+\begin{matrix}
+z & \leftrightarrow  &  z^* \\
+|u\rangle & \leftrightarrow &   \langle u | \\
+A & \leftrightarrow & A^{\dagger}
+\end{matrix}
+\right. \hspace{5cm}
+\]
+
+    and there are two more rules that allow applying \(\dagger\) to sums and
+products of objects \(a \in \{z, \ket{u}, A\}\)
+
+\begin{itemize}
+\item
+  \emph{linearity} \((a + b)^\dagger = a^\dagger + b^\dagger\)
+\item
+  \emph{transpose} \((ab)^\dagger = b^\dagger a^\dagger\) (only relevant
+  when \(a\) and \(b\) do not commute)
+\end{itemize}
+
+    Examples 1. \$ \ket{v} = A \ket{u}
+\textasciitilde\textasciitilde{}\st{\Leftrightarrow}\textasciitilde\textasciitilde{}
+\bra{v} = \bra{u} A\^{}\dagger \textasciitilde\textasciitilde\$ where
+the operator on the right acts on the \emph{bra} to its left. Note that,
+since \(\ket{v}^\dagger = \ket{Au}^\dagger = \bra{Au}\), the previous
+equation implies \[
+\bra{Au} = \bra{u} A^\dagger
+\] 2. \$ \bra{w} A \ket{u}\^{}* = (\bra{w} A \ket{u})\^{}\dagger =
+\bra{u} A\^{}\dagger \ket{w} \$
+
+    \subsubsection{Adjoint matrix}\label{adjoint-matrix}
+
+These rules allow us to obtain the adjoint of an operator
+
+\[
+A^\dagger = \sum_{ij} \left( A_{ij} \ketbra{i}{j} \right)^\dagger = \sum_{ij} \ketbra{j}{i} A_{ij}^* = \sum_{ji} A_{ji}^* \ketbra{i}{j}
+\]
+
+where in the last equation we have swapped the indices
+\(i \leftrightarrow j\)
+
+    We see that the matrix representing \(A^\dagger\) is the \emph{adjoint
+matrix} of \(A_{ij}\), that is, the transpose and conjugate
+
+\[
+(A^\dagger)_{ij} = A^*_{ji} = (A^*_{ij})^t \equiv (A_{ij})^\dagger
+\]
+
+where \(^\dagger\) means the adjoint of an operator on the left, and of
+a matrix on the right.
+
+    If \(\Hil\) has dimension \(N\), a \emph{general operator}
+\(A \in \Lin(\Hil)\) is specified by a matrix of \(N^2\) complex
+numbers, so
+
+\[
+A = A_{ij} \ket{e_i} \bra{e_j}.
+\]
+
+\(N^2\) complex numbers correspond to \(2N^2\) real numbers.
+
+    In other words: \(A\) has \(N^2\) complex degrees of freedom and,
+therefore, this is the dimension of the space \({\rm L}(\Hil)\):
+
+\[
+{\rm dim}_{\mathbf{C}}(\Lin(\Hil)) = N^2 ~~~ \Longleftrightarrow ~~~ {\rm dim}_{\mathbf{R}}(\Lin(\Hil)) = 2 N^2
+\]
+
+    \# Classes of operators
+
+    Within \(\Lin(\Hil)\) we can define subsets of operators that maintain
+certain important properties. Some will form vector subspaces, while
+others will not.
+
+We can define such \textbf{classes of operators} by requiring them to
+satisfy some \emph{condition} or \emph{restriction}.
+
+    \#\# Unitary Operator
+
+Definition:\\
+A unitary operator \(U\) is one such that its adjoint equals its inverse
+\\
+\[
+U^\dagger = U^{-1}
+\]
+
+    Naturally, this equation translates into the same equation for the
+associated matrices in \emph{any basis} \[
+(U_{ij})^\dagger = U_{ji}^* = U^{-1}_{ij}
+\] Let us now see why we have defined this class of operators.
+
+    Theorem: \\
+The action of a unitary operator preserves the inner product of any two
+vectors intact.
+
+\begin{quote}
+\begin{quote}
+Proof
+\end{quote}
+\end{quote}
+
+Let \(U\) be a unitary operator, and
+\(\ket{\varphi'} = U \ket{\varphi}\) and \(\ket{\psi'} = U \ket{\psi}\)
+be two vectors transformed by \(U\), then
+
+\[
+\braket{\varphi'}{\psi'} = \left( \bra{\varphi} U^\dagger \right) U \ket{\psi} = \bra{\varphi} U^\dagger U \ket{\psi} = \braket{\varphi}{\psi}
+\]
+
+Specializing to \(\ket{\varphi} = \ket{\psi}\), we have that a unitary
+operator \emph{preserves the norm}.
+
+\[
+\| U \ket{\varphi} \| = \| \ket{\varphi} \|
+\]
+
+    \begin{itemize}
+\item
+  In particular, it preserves the norm of any vector.
+\item
+  Therefore, it preserves the \emph{distance} between two vectors,
+  \(d(\ket{v}, \ket{w}) = \| \ket{v} - \ket{w} \|\).
+\end{itemize}
+
+    \begin{itemize}
+\tightlist
+\item
+  \textbf{Composition} of unitary operators \textbf{is} unitary
+\end{itemize}
+
+\[
+(UV)^\dagger = V^\dagger U^\dagger = V^{-1} U^{-1} = (UV)^{-1}
+\]
+
+    Mathematically, this means that unitary operators form a \emph{group}.
+
+    \begin{itemize}
+\tightlist
+\item
+  \textbf{Linear combination} of unitary operators \textbf{is not}
+  unitary
+\end{itemize}
+
+\[
+(a U + b V)^\dagger = a^* U^\dagger + b^* V^\dagger = a^* U^{-1} + b^* V^{-1} \neq (a U + b V)^{-1}
+\]
+
+    Mathematically, this means that unitary operators \textbf{do not form} a
+\emph{vector subspace} of \(\Lin(\Hil)\).
+
+    \begin{itemize}
+\tightlist
+\item
+  Therefore, unitary operators do not form a vector subspace within
+  \(\Lin(\Hil)\). The mathematical structure they form is called a
+  group: the unitary group \(U(d)\) acts on the Hilbert space \(\Hil\)
+  of dimension \(d\).
+\end{itemize}
+
+    \begin{itemize}
+\tightlist
+\item
+  Nevertheless, they form a \emph{manifold}: a continuous set that can
+  be parameterized by a collection of parameters, called the
+  \emph{dimension of the manifold}.
+\end{itemize}
+
+    \begin{itemize}
+\tightlist
+\item
+  Since there is a one-to-one correspondence between an operator and a
+  matrix (in a basis), that dimension will be equal to the
+  \emph{dimension of the set of unitary matrices}.
+\end{itemize}
+
+    Exercise 1.3.4
+
+Subtract from \({\rm dim}_{\bf R}(\Lin(\Hil)) = 2N^2\) the number of
+equations that restrict the matrix of a unitary operator, and thus find
+the (real) dimension of the group \(U(N)\) of unitary operators of
+dimension \(N\).
+
+    \subsubsection{Orthonormal bases}\label{orthonormal-bases}
+
+\begin{itemize}
+\tightlist
+\item
+  As a particular case, applying a unitary operator \(U\) to an
+  orthonormal basis \(\{\ket{e_i}\}\) yields another orthonormal basis
+  \(\{\ket{\tilde e_i}\}\)
+\end{itemize}
+
+\[
+\left. \begin{array}{c}\ket{\tilde e_i} = U\ket{e_i}\\ U^{-1} =  U^\dagger \end{array} \right\}
+~~~~ \Longleftrightarrow ~~~~\braket{\tilde e_i}{\tilde e_j} = \bra{\tilde e_i}U^\dagger U\ket{\tilde e_j} = \braket{e_i}{e_j} = \delta_{ij}
+\]
+
+    Conversely, given two orthonormal bases, \(\{\ket{e_i}\}\) and
+\(\{\ket{\tilde e_i}\}\), the operator relating them is a unitary
+operator
+
+\[ 
+ \begin{array}{rcl} 
+U = \sum_i \ketbra{\tilde e_i}{e_i} & \Rightarrow &  U\ket{e_j} = \ket{\tilde e_j} 
+ \\ \rule{0mm}{10mm}
+U^\dagger = \sum_i \ketbra{e_i}{\tilde e_i}  & \Rightarrow &    U^\dagger\ket{\tilde e_j} = \ket{e_j} ~~~\Rightarrow ~~~U^\dagger = U^{-1}
+ \end{array}
+\]
+
+    \begin{itemize}
+\tightlist
+\item
+  An orthogonal operator is a particular case of a unitary operator with
+  \emph{real matrix elements}. The rotation operator \(R(\theta)\) that
+  we studied at the beginning of this topic is an orthogonal operator.
+  It is straightforward to verify that
+\end{itemize}
+
+\[
+R(\theta)^\dagger = R(\theta)^t = R(-\theta) = R(\theta)^{-1}
+\]
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{U}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{matrix}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{n}{J}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{1}\PY{n}{J}\PY{p}{,} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}\PY{p}{)}\PY{o}{/}\PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{U}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+ 
+            
+\prompt{Out}{outcolor}{2}{}
+    
+    $$
+
+\begin{bmatrix}
+\frac{\sqrt{2}}{2} & \frac{\sqrt{2} i}{2}  \\
+ \frac{\sqrt{2} i}{2} & \frac{\sqrt{2}}{2}  \\
+ \end{bmatrix}
+$$
+
+    
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{Uadj}\PY{o}{=}\PY{n}{U}\PY{o}{.}\PY{n}{getH}\PY{p}{(}\PY{p}{)} \PY{c+c1}{\PYZsh{} getH es un método de la clase matrix que devuelve la matriz conjugada hermítica}
+\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{Uadj}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+ 
+            
+\prompt{Out}{outcolor}{5}{}
+    
+    $$
+
+\begin{bmatrix}
+\frac{\sqrt{2}}{2} & - \frac{\sqrt{2} i}{2}  \\
+ - \frac{\sqrt{2} i}{2} & \frac{\sqrt{2}}{2}  \\
+ \end{bmatrix}
+$$
+
+    
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{check that U is unitary}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{Uadj}\PY{p}{,}\PY{n}{U}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+check that U is unitary
+    \end{Verbatim}
+ 
+            
+\prompt{Out}{outcolor}{6}{}
+    
+    $$
+
+\begin{bmatrix}
+1 & 0  \\
+ 0 & 1  \\
+ \end{bmatrix}
+$$
+
+    
+
+    \#\# Normal Operator
+
+Definition: An operator \(N\) is normal if it commutes with its adjoint
+\\
+\[
+N N^\dagger = N^\dagger N
+\]\\
+
+    The matrix \(N_{ij}\) has an important property.
+
+    Theorem: \\
+\(N_{ij}\) is the matrix of a normal operator, \([N, N^\dagger] = 0\),
+if and only if it is unitarily equivalent to a diagonal matrix. \\
+\strut \\
+That is, if there exists \(U\) with \(U^{-1} = U^\dagger\) such that \[
+N'_{ij} = (U^{\dagger} N \, U)_{ij} = 
+\begin{bmatrix} \lambda_1 &  & &  \\ & \lambda_2 & &  \\ & & \ddots &  \\ & & & \lambda_D \end{bmatrix}
+\]
+
+    \#\# Hermitian Operator
+
+Definition: An operator \(H\) is Hermitian (or self-adjoint) if it
+satisfies the following equation \\
+\[
+H = H^\dagger 
+\]
+
+    Obviously, a Hermitian operator \(~\Rightarrow\) is a normal operator,
+but the converse does not necessarily hold.
+
+    \begin{itemize}
+\tightlist
+\item
+  \textbf{Linear combination} of \emph{Hermitian} operators with
+  \textbf{real} coefficients \textbf{is} Hermitian\\
+  \[
+  C^\dagger = (a A + b B)^\dagger = a^* A^\dagger + b^* B^\dagger = aA + b B = C
+  \]
+\end{itemize}
+
+    Mathematically: the self-adjoint operators form a real vector subspace
+\(\mathrm{Her}(\Hil) \subset \Lin(\Hil)\).
+
+    \begin{itemize}
+\tightlist
+\item
+  \textbf{Composition} of Hermitian operators is generally \textbf{not}
+  Hermitian\\
+  \[
+  (AB)^\dagger = B^\dagger A^\dagger = BA \neq AB
+  \]
+\end{itemize}
+
+    Mathematically, they do not form a group unless \(A\) and \(B\) commute
+with each other, in which case they form an \emph{Abelian group}.
+
+    \begin{itemize}
+\tightlist
+\item
+  The matrix associated with a Hermitian operator is also called
+  Hermitian, and it equals its conjugate transpose.
+\end{itemize}
+
+\[
+A_{ij} = A^\dagger_{ij} \equiv  A^{*t}_{ij} = A^*_{ji}   \hspace{4cm}
+\]
+
+    \begin{verbatim}
+<b>Note:</b>
+\end{verbatim}
+
+From any operator \(C \neq C^\dagger\), we can always construct a
+Hermitian operator \(H = H^\dagger\) by the linear combination
+
+\[
+H = C + C^\dagger
+\] where \(a\) is a real number. This trivially extends to the matrices
+representing them in any basis
+
+\[
+H_{ij} = C_{ij} + C_{ji}^*
+\]
+
+    Exercise 1.3.5
+
+Subtract from \({\rm dim}_{\bf R}({\rm L}(\Hil)) =  2N^2\) the number of
+equations that constrain the matrix of a Hermitian operator and thus
+find the (real) dimension of the vector subspace of Hermitian operators.
+
+    If you have done the last two exercises, you will have found the same
+answer in both. This means there could be a relationship between
+Hermitian and unitary matrices.
+
+    \#\# Positive Semidefinite Operator
+
+Definition: \(~\) we say that an operator \(A\) is positive semidefinite
+(or non-negative) if it satisfies \\
+\[
+\bra{u} A \ket{u} \geq 0 
+\]\\
+for all \(\ket{u} \in \Hil\).
+
+In this case, we write \(A \geq 0\).
+
+    If the inequality is strict, \(\bra{u} A \ket{u} > 0\) for all
+\(\ket{u}\), then \(A\) is called a \emph{positive operator}, denoted
+\(A > 0\).
+
+    The following theorem is the equivalent of the fact that a real number
+\(a \in \mathbb{R}\) has a square root if and only if it is
+non-negative.
+
+Theorem: A Hermitian operator \(A\) is positive semidefinite if and only
+if there exists another operator \(B\) such that \[   
+A = B^\dagger B
+\]\\
+for all \(\ket{u} \in \Hil\).
+
+    \#\# Projectors
+
+\hyperref[top]{<<<}
+
+    Definition:\\
+A projector is a Hermitian operator that satisfies the equation \[
+P^2 = P
+\]
+
+    \begin{itemize}
+\tightlist
+\item
+  The operator \(P = \ketbra{u}{u}\) fulfills
+\end{itemize}
+
+it is Hermitian
+
+\[
+P^\dagger = \ketbra{u}{u} = P
+\]
+
+    \begin{itemize}
+\tightlist
+\item
+  it is idempotent
+\end{itemize}
+
+\[
+P^2 = \ket{u}\braket{u}{u}\bra{u} = \ketbra{u}{u} = P
+\]
+
+    \begin{itemize}
+\tightlist
+\item
+  It indeed projects \textbf{any vector} onto the direction of
+  \(\ket{u}\)
+\end{itemize}
+
+\[
+P \ket{w} = \ket{u}\braket{u}{w} = a \ket{u}
+\]
+
+where the complex number \(a = \braket{u}{w}\) is the
+\textbf{projection}
+
+    Note:
+
+\begin{itemize}
+\item
+  The projection is non-invertible
+\item
+  The projector is a non-unitary operator: in general it reduces the
+  norm \[
+  \| P\ket{w}\|^2 = \bra{w}P^\dagger P\ket{w} = \bra{w} P\ket{w}= \braket{w}{u}\braket{u}{w} = |\braket{u}{w}|^2 < \|\ket{u}\|\|\ket{w}\| = 1  
+  \] \\
+  where we have applied the Cauchy-Schwarz inequality, which is strict
+  if we assume \(\ket{u} \neq \ket{w}\).
+\end{itemize}
+
+    \begin{itemize}
+\item ~
+  \subsubsection{Matrix associated to a
+  projector}\label{matrix-associated-to-a-projector}
+\end{itemize}
+
+If \(\ket{u} = \ket{e_1}\), the operator \(P_1 = \ket{e_1}\bra{e_1}\)
+projects any vector onto its component along \(\ket{e_1}\).\\
+
+In matrix form \[
+ \ket{e_1}\bra{e_1} = \begin{pmatrix} 1 & 0 & ...& 0 \end{pmatrix} \begin{pmatrix} 1 \\ 0 \\ \vdots\\ 0 \end{pmatrix} =
+ \begin{pmatrix} 1 & 0 &  \cdots & 0 \\ 0 & 0  & \cdots & 0 \\ 
+ \vdots & \vdots &\vdots & \vdots  \\
+ 0  & 0 & \cdots & 0\end{pmatrix}
+ \] so that \[
+    \ket{e_1}\braket{e_1}{u} ~= ~\begin{pmatrix} 1 & 0 &  \cdots & 0 \\ 0 & 0  & \cdots & 0 \\ 
+ \vdots & \vdots &\vdots & \vdots  \\
+ 0  & 0 & \cdots & 0\end{pmatrix} \begin{pmatrix} u_1 \\ u_2 \\ \vdots \\ u_N \end{pmatrix}
+ = \begin{pmatrix} u^1 \\ 0 \\ \vdots \\ 0 \end{pmatrix} = u^1 \ket{e_1}
+\]
+
+    If \(\ket{u} = \sum_i u^i\ket{e_i}\) is a unit vector with
+\(\|\ket{u}\|=1\), then the projector along \(\ket{u}\) is given by \[
+P(u) = \ketbra{u}{u} = \sum_{i,j} u_i u^*_j \ketbra{e_i}{e_j}
+\] That is, it is associated with a matrix given by
+\(P_{ij} = u_i u^*_j\). It is straightforward to verify that \[
+P^2_{ik} = \sum_j P_{ij} P_{jk} = \sum_j u_i u^*_j u_j u^*_k = u_i \left(\sum_j u^*_j u_j \right) u_k^* = u_i u_k^* = P_{ik}
+\] as corresponds to a projector.
+
+    \#\#\# Orthogonal projectors
+
+    \begin{itemize}
+\tightlist
+\item
+  \(P_1\) and \(P_2\) are orthogonal projectors if they satisfy
+\end{itemize}
+
+\[
+P_1^2 = P_1~~~~~~P_2^2 = P_2 ~~~~~~~P_1 P_2 = P_2 P_1 =  0
+\]
+
+    \begin{itemize}
+\tightlist
+\item
+  if \(P_1\) and \(P_2\) are orthogonal projectors, \(P = P_1 + P_2\) is
+  also a projector
+\end{itemize}
+
+\[
+P^2 = (P_1 + P_2) (P_1 + P_2) = P_1^2 + P_1 P_2 + P_2 P_1 + P_2^2 = P_1 + P_2 = P
+\]
+
+    \begin{itemize}
+\tightlist
+\item
+  A particularly important case of orthogonal proyectors is \(P_1 = P\)
+  and \(P_2 = P_\perp = I - P\).
+\end{itemize}
+
+\begin{quote}
+\begin{quote}
+Proof
+\end{quote}
+\end{quote}
+
+indeed \(P_\perp\) is a projector
+
+\[~~ P_\perp^2 = (I - P)(I-P) = I^2 - P - P + P^2 = I- P = P_\perp \]
+
+and it is perpendicular to \(P\)
+
+\begin{eqnarray}
+P_\perp P &=& (I - P) P = P - P^2 = P - P =  0 
+\end{eqnarray}
+
+    Given a vector \(\ket{u}\), we can decompose any other vector
+\(\ket{\psi}\) into its parallel and perpendicular projections
+
+\[
+\ket{\psi} = ( P + P_\perp) \ket{\psi} = a \ket{u} + b \ket{u_\perp} 
+\]
+
+where \(a = \braket{u}{\psi}\) and \(b = \braket{u_\perp}{\psi}\)
+
+    The equation \(\ket{\psi} = a \ket{u} + b\ket{u_\perp}\) means that the
+three vectors lie in the same hyperplane.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{d} \PY{o}{=} \PY{l+m+mi}{3}
+
+\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ generate a random vector}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{u} \PY{o}{=} \PY{n}{tQ}\PY{o}{.}\PY{n}{random\PYZus{}ket}\PY{p}{(}\PY{n}{d}\PY{p}{)}
+\PY{n}{display}\PY{p}{(}\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{u}\PY{p}{)}\PY{p}{)}
+
+\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ build the parallel and perpendicular projectors}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{P\PYZus{}par} \PY{o}{=} \PY{n}{tQ}\PY{o}{.}\PY{n}{ket\PYZus{}bra}\PY{p}{(}\PY{n}{u}\PY{p}{,}\PY{n}{u}\PY{p}{)}\PY{p}{;}
+\PY{n}{P\PYZus{}perp} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{identity}\PY{p}{(}\PY{n}{d}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{P\PYZus{}par}
+
+\PY{n}{display}\PY{p}{(}\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{P\PYZus{}par}\PY{p}{)}\PY{p}{)}
+\PY{n}{display}\PY{p}{(}\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{P\PYZus{}perp}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    $$
+
+\begin{bmatrix}
+-0.6097923742 - 0.454015077 i  \\
+ 0.1887022679 - 0.2144934205 i  \\
+ -0.4145697439 + 0.4105356555 i  \\
+ \end{bmatrix}
+$$
+
+    
+    $$
+
+\begin{bmatrix}
+0.5779764297 & -0.0176859571 - 0.2164701268 i & 0.0664120911 + 0.4385624262 i  \\
+ -0.0176859571 + 0.2164701268 i & 0.0816159733 & -0.1662874478 + 0.0114534731 i  \\
+ 0.0664120911 - 0.4385624262 i & -0.1662874478 - 0.0114534731 i & 0.3404075969  \\
+ \end{bmatrix}
+$$
+
+    
+    $$
+
+\begin{bmatrix}
+0.4220235703 & 0.0176859571 + 0.2164701268 i & -0.0664120911 - 0.4385624262 i  \\
+ 0.0176859571 - 0.2164701268 i & 0.9183840267 & 0.1662874478 - 0.0114534731 i  \\
+ -0.0664120911 + 0.4385624262 i & 0.1662874478 + 0.0114534731 i & 0.6595924031  \\
+ \end{bmatrix}
+$$
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ check properties P\PYZca{}2 = P, and orthogonality }\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{A} \PY{o}{=} \PY{n}{P\PYZus{}par}\PY{n+nd}{@P\PYZus{}par} \PY{o}{\PYZhy{}} \PY{n}{P\PYZus{}par}
+\PY{n}{B} \PY{o}{=} \PY{n}{P\PYZus{}perp}\PY{n+nd}{@P\PYZus{}perp} \PY{o}{\PYZhy{}} \PY{n}{P\PYZus{}perp}
+\PY{n}{C} \PY{o}{=} \PY{n}{P\PYZus{}par}\PY{n+nd}{@P\PYZus{}perp}
+
+\PY{n}{display}\PY{p}{(}\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{C}\PY{p}{)}\PY{p}{)}
+
+
+\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ obtain parallel and perpendicular components of another vector}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{v} \PY{o}{=} \PY{n}{tQ}\PY{o}{.}\PY{n}{random\PYZus{}ket}\PY{p}{(}\PY{n}{d}\PY{p}{)}
+
+\PY{n}{v\PYZus{}par} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{P\PYZus{}par}\PY{p}{,}\PY{n}{v}\PY{p}{)}
+\PY{n}{v\PYZus{}perp} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{P\PYZus{}perp}\PY{p}{,}\PY{n}{v}\PY{p}{)}
+
+\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ check perpendicularity}\PY{l+s+s1}{\PYZsq{}}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{tQ}\PY{o}{.}\PY{n}{braket}\PY{p}{(}\PY{n}{v\PYZus{}par}\PY{p}{,}\PY{n}{v\PYZus{}perp}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    $$
+
+\begin{bmatrix}
+0 & 0 & 0  \\
+ 0 & 0 & 0  \\
+ 0 & 0 & 0  \\
+ \end{bmatrix}
+$$
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+0j
+    \end{Verbatim}
+
+    Exercise 1.3.6 ( reflector)
+
+Given a unit vector (\ket{u}), write down:
+
+\begin{itemize}
+\tightlist
+\item
+  the operator (R\_u\^{}\{\perp\}) that reflects the component
+  perpendicular to (\ket{u}) of any vector (\ket{\psi})\\
+\item
+  the operator (R\_u\^{}\{\textbar\}) that reflects the component
+  parallel to (\ket{u}) of any vector (\ket{\psi})\\
+\end{itemize}
+
+    \subsubsection{Projectors onto a
+Subspace}\label{projectors-onto-a-subspace}
+
+Consider an orthonormal basis \(\{\ket{e_i}\}, i=1,\ldots,N\) of
+\(\Hil\), and divide it into two subsets
+
+\[
+\{\ket{e_i}\}, \quad i=1,\ldots,N_1 \quad,\quad \{\ket{e_{j+N_1}} \}, \quad j=1,\ldots,N_2
+\]
+
+Any vector admits an orthogonal decomposition
+
+\[
+\begin{eqnarray}
+\ket{\psi} &~=~& \sum_{i=1}^N a_i \ket{e_i} = \sum_{i=1}^{N_1} a_i \ket{e_i} + \sum_{i=1}^{N_2} a_{i+N_1} \ket{e_{i+N_1}} \equiv \ket{\psi_1} + \ket{\psi_2} \rule{0mm}{5mm}
+\end{eqnarray}
+\]
+
+with \(\braket{\psi_1}{\psi_2} = 0\).
+
+    We say that the space \$\Hil \$ decomposes into the \emph{direct sum of
+orthogonal subspaces}
+
+\[
+\Hil = \Hil_1 \oplus \Hil_2
+\]
+
+of dimensions \(N_1 + N_2 = N\),
+
+    The operators
+
+\[
+P_1 = \sum_{i=1}^{N_1} \ket{e_i}\bra{e_i} \quad, \quad P_2 = \sum_{i=1}^{N_2} \ket{e_{i+N_1}}\bra{e_{i+N_1}} = I - P_1
+\]
+
+are orthogonal projectors projector
+
+\[
+P_1^2 = P_1 \quad, \quad P_2^2 = P_2   \quad, \quad P_1 P_2 = P_2 P_1 = 0
+\]
+
+    Their action extracts from a vector its component in the associated
+subspace.
+
+\[
+P_1 \ket{\psi} ~=~ \sum_{i=1}^{N_1} \ket{e_i}\bra{e_i} \left(\sum_{k=1}^N a_k \ket{u_k} \right) ~=~
+\sum_{i=1}^{N_1} a_i \ket{e_i} ~=~ \ket{\psi_1}
+\]
+
+\[
+P_2 \ket{\psi} ~=~ \sum_{i=1}^{N_2} \ket{e_{i+N_1}}\bra{e_{i+N_1}} \left(\sum_{k=1}^N a_k \ket{u_k} \right) ~=~
+\sum_{i=1}^{N_1} a_{i+N_1} \ket{e_{i+N_1}} ~=~ \ket{\psi_2}
+\]
+
+    Note:
+
+\(P_1 \neq P_v = \ketbra{v}{v}\) where \(\ket{v} = \sum_i \ket{i}\).
+This operator would project any vector onto the direction of
+\(\ket{v}\).
+
+    \# Eigenvalues and eigenvectors
+
+\hyperref[top]{<<<}
+
+    Definition: Eigenvalues and eigenvectors There exist vectors,
+\(\ket{\lambda}\), for which the action of an operator \(A\) returns a
+parallel vector \[
+A\ket{\lambda} = \lambda \ket{\lambda}\, 
+\] \\
+We say that \(\ket{\lambda}\) is an eigenvector (or proper vector) of
+\(A\) with associated eigenvalue (or proper value)
+\(\lambda \in {\mathbb C}\)
+
+    Suppose that \(A\) has \(d\) eigenvectors
+\(\ket{\lambda_j} = \sum_i v_{ij}\ket{e_i}, \, j=1,\ldots,d\).
+
+Let \(U_{ij} = v_{ij}\) be the matrix formed by the components of the
+eigenvectors (stacked as columns).
+
+Then
+
+\[
+A_{diag} = \begin{pmatrix} \lambda_1 & & \\ & \ddots & \\ & & \lambda_d \end{pmatrix} = U^{-1} A U
+\]
+
+    If \(A\) is normal, the matrix \(U\) that diagonalizes it is unitary,
+i.e., \(U^{-1} = U^{\dagger}\).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{d} \PY{o}{=} \PY{l+m+mi}{2}
+\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ en general una matriz no será normal }\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{A} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{matrix}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{n}{d}\PY{p}{,}\PY{n}{d}\PY{p}{)}\PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{n}{d}\PY{p}{,}\PY{n}{d}\PY{p}{)} \PY{o}{*} \PY{l+m+mi}{1}\PY{n}{j}\PY{p}{)}
+\PY{n}{display}\PY{p}{(}\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{A}\PY{p}{,}\PY{n}{A}\PY{o}{.}\PY{n}{getH}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{A}\PY{o}{.}\PY{n}{getH}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{A}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{eigvals}\PY{p}{,} \PY{n}{eigvecs} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{eig}\PY{p}{(}\PY{n}{A}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{valprop =}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{eigvals}\PY{p}{)}
+
+\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{verificamos que los autovectores son las columnas de v}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{m}\PY{o}{=}\PY{l+m+mi}{1} \PY{c+c1}{\PYZsh{}cambiar a otro valor}
+\PY{n}{display}\PY{p}{(}\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{A}\PY{p}{,} \PY{n}{eigvecs}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{m}\PY{p}{]}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{eigvals}\PY{p}{[}\PY{n}{m}\PY{p}{]} \PY{o}{*} \PY{n}{eigvecs}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{m}\PY{p}{]}\PY{p}{,}\PY{n}{prefix}\PY{o}{=}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{A|}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{lambda\PYZus{}m }\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{rangle \PYZhy{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{lambda\PYZus{}m |}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{lambda\PYZus{}m}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{rangle =  }\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+
+\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ diagonalizamos A }\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{U} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{matrix}\PY{p}{(}\PY{n}{eigvecs}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{U}\PY{o}{.}\PY{n}{getI}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{A}\PY{p}{,}\PY{n}{U}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{n}{prefix}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{A\PYZus{}}\PY{l+s+si}{\PYZob{}diag\PYZcb{}}\PY{l+s+s1}{ = U\PYZca{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZhy{}1\PYZcb{} A U = }\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{U no es unitaria}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{U}\PY{p}{,}\PY{n}{U}\PY{o}{.}\PY{n}{getH}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    $$
+
+\begin{bmatrix}
+0.0362223694 & -0.147799331 + 0.6577739833 i  \\
+ -0.147799331 - 0.6577739833 i & -0.0362223694  \\
+ \end{bmatrix}
+$$
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+valprop = [0.34791292-0.50406172j 1.05867426+1.35722234j]
+    \end{Verbatim}
+
+    $$
+A|\lambda_m \rangle -\lambda_m |\lambda_m\rangle =  
+\begin{bmatrix}
+0  \\
+ 0  \\
+ \end{bmatrix}
+$$
+
+     
+            
+\prompt{Out}{outcolor}{7}{}
+    
+    $$
+
+\begin{bmatrix}
+1.0088753185 & -0.0362142552 + 0.1611698425 i  \\
+ -0.0362142552 - 0.1611698425 i & 0.9911246815  \\
+ \end{bmatrix}
+$$
+
+    
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{d} \PY{o}{=} \PY{l+m+mi}{2}
+\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{veamos ahora una matriz normal}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{A} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{matrix}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+\PY{n}{display}\PY{p}{(}\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{A}\PY{p}{,}\PY{n}{A}\PY{o}{.}\PY{n}{getH}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{A}\PY{o}{.}\PY{n}{getH}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{A}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+
+\PY{n}{eigvals}\PY{p}{,} \PY{n}{eigvecs} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{eig}\PY{p}{(}\PY{n}{A}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{valprop =}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{eigvals}\PY{p}{)}
+
+\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{verificamos que los autovectores son las columnas de v}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{m}\PY{o}{=}\PY{l+m+mi}{1} \PY{c+c1}{\PYZsh{}cambiar a otro valor}
+\PY{n}{display}\PY{p}{(}\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{A}\PY{p}{,} \PY{n}{eigvecs}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{m}\PY{p}{]}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{eigvals}\PY{p}{[}\PY{n}{m}\PY{p}{]} \PY{o}{*} \PY{n}{eigvecs}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{m}\PY{p}{]}\PY{p}{,}\PY{n}{prefix}\PY{o}{=}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{A|}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{lambda\PYZus{}m }\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{rangle \PYZhy{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{lambda\PYZus{}m |}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{lambda\PYZus{}m}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{rangle =  }\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+
+\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ diagonalizamos A }\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{U} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{matrix}\PY{p}{(}\PY{n}{eigvecs}\PY{p}{)}\PY{p}{;}
+
+\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{U}\PY{o}{.}\PY{n}{getH}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{A}\PY{p}{,}\PY{n}{U}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{n}{prefix}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{A\PYZus{}}\PY{l+s+si}{\PYZob{}diag\PYZcb{}}\PY{l+s+s1}{ = U\PYZca{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{dagger\PYZcb{} A U = }\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{U es unitaria}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{U}\PY{p}{,}\PY{n}{U}\PY{o}{.}\PY{n}{getH}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    $$
+
+\begin{bmatrix}
+0 & 0  \\
+ 0 & 0  \\
+ \end{bmatrix}
+$$
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+valprop = [1.+1.j 1.-1.j]
+    \end{Verbatim}
+
+    $$
+A|\lambda_m \rangle -\lambda_m |\lambda_m\rangle =  
+\begin{bmatrix}
+0  \\
+ 0  \\
+ \end{bmatrix}
+$$
+
+     
+            
+\prompt{Out}{outcolor}{8}{}
+    
+    $$
+
+\begin{bmatrix}
+1 & 0  \\
+ 0 & 1  \\
+ \end{bmatrix}
+$$
+
+    
+
+    \#\# Eigenspaces
+
+\hyperref[top]{<<<}
+
+    We say that an eigenvalue \(\lambda_k\) is \(d_k\)-fold
+\emph{degenerate} if there exist \(d_k\) linearly independent
+eigenvectors, \(\ket{\lambda_k^{a}}\) with \(a=1,...,d_k\), associated
+to the \textbf{same} eigenvalue \[
+A\ket{\lambda_k^a} = \lambda_k \ket{\lambda_k^a}
+\] These eigenvectors generate an \emph{eigenspace}
+\(S(\lambda_k) \subset \Hil\).
+
+    For example, let \(\ket{u} = \sum_{a=1}^{d_k} c_a \ket{\lambda^a_k}\) be
+a linear combination of these eigenvectors, then \begin{eqnarray}
+A \ket{u} 
+=  \sum_{a=1}^{d_k} c_a A\ket{\lambda^a_k}  =  \sum_{a=1}^{d_k} c_a \lambda_k \ket{\lambda^a_k}  =   \lambda_k \sum_{a=1}^{d_k} c_a \ket{\lambda^a_k}  = \lambda_k \ket{u}
+\end{eqnarray} Therefore, \(\ket{u} \in S(\lambda_k)\).
+
+    \begin{itemize}
+\tightlist
+\item
+  The Gram-Schmidt theorem guarantees that we can choose (through an
+  appropriate change) the set
+  \(\{\ket{\lambda_{k}^a}\} \in (\lambda_k), a=1,\ldots,d_k\) so that it
+  forms an orthonormal basis
+\end{itemize}
+
+\[
+\braket{\lambda_{k}^a}{\lambda_{k}^b} = \delta_{ab}
+\]
+
+    \begin{itemize}
+\tightlist
+\item
+  The \textbf{orthogonal projector} onto the eigenspace \(S(\lambda_k)\)
+  is
+\end{itemize}
+
+\[
+P_k = \sum_{a=1}^{d_k} \ketbra{\lambda_{k}^a}{\lambda_{k}^a}
+\]
+
+    \begin{verbatim}
+<b>Example:</b>
+\end{verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  Let us denote by \(R_z(\theta)\) the operator that performs a rotation
+  in the \((x,y)\) plane by an angle \(\theta\). When \(\theta = \pi\)
+  we have the following action on the three elements
+  \(\{\hat{\bf x}, \hat{\bf y}, \hat{\bf z}\}\) of the Cartesian basis:
+  \\
+  \begin{eqnarray}
+  R_z(\pi)\hat{\bf x} &=& -\hat{\bf x}  \\ \rule{0mm}{6mm}
+  R_z(\pi)\hat{\bf y} &=& -\hat{\bf y}  \\ \rule{0mm}{6mm}
+  R_z(\pi)\hat{\bf z} &=& + \hat{\bf z}  
+  \end{eqnarray}\\
+  \strut \\
+\item
+  We see that there is an eigenvector \(\hat{\bf z}\) with eigenvalue
+  \(+1\) and two eigenvectors \(\hat{\bf x}\) and \(\hat{\bf y}\) with
+  eigenvalue \(-1\).
+\item
+  The space \({\mathbb R}^3\) splits into two eigenspaces of
+  \(R_z(\pi)\): one of dimension 1 (along the \(\hat{\bf z}\) axis) and
+  another of dimension 2 (in the \((\hat{\bf x}, \hat{\bf y})\) plane).
+  \\
+\item
+  The associated projectors are
+\end{itemize}
+
+\[
+P_{\hat{\bf z}}= \ket{\hat{\bf z}}\bra{\hat{\bf z}}=\begin{bmatrix} 0 & & \\ & 0 & \\ & & 1 \end{bmatrix}~~~,~~~
+P_{\hat{\bf x}\hat{\bf y}}= \ket{\hat{\bf x}}\bra{\hat{\bf x}}+\ket{\hat{\bf y}}\bra{\hat{\bf y}}=\begin{bmatrix} 1 & & \\ & 1 & \\ & & 0 \end{bmatrix}~~~,~~~
+\]
+
+    \subsection{Operators' spectra}\label{operators-spectra}
+
+    \subsubsection{Spectrum of Normal
+Operators}\label{spectrum-of-normal-operators}
+
+    Let us recall that \(N\) is a normal operator if it commutes with its
+adjoint:
+
+\[
+NN^\dagger = N^\dagger N
+\]
+
+Spectra of normal operators enjoy an important property
+
+    Theorem: the eigenvectors of a normal operator associated to two
+distinct eigenvalues are orthogonal \\
+\strut \\
+\[
+\lambda_i\neq \lambda_j~~~~\Longleftrightarrow ~~~~ \braket{\lambda_i}{\lambda_j} = 0
+\]
+
+\begin{quote}
+\begin{quote}
+Proof:
+
+From the eigenvalue equation
+\(N\ket{\lambda_j} =  \lambda_j \ket{\lambda_j}\) and from
+\(NN^\dagger = N^\dagger N\), it follows that \[
+\bra{\lambda_j}(N^\dagger - \lambda_j^*)(N - \lambda_j) \ket{\lambda_j} = \bra{\lambda_j}(N - \lambda_j)(N^\dagger - \lambda_j^*) \ket{\lambda_j}  = 0\,,
+\] from which we obtain
+\((N^\dagger - \lambda_j^*) \ket{\lambda_j} = 0 \Rightarrow \bra{\lambda_j} N = \bra{\lambda_j}\lambda_j\).
+Then \[
+\bra{\lambda_j}N\ket{\lambda_i} = \lambda_j \braket{\lambda_j}{\lambda_i} = \lambda_i \braket{\lambda_j}{\lambda_i} \, ,
+\] from which it follows that, for \(\lambda_i \neq \lambda_j\),
+\(\Rightarrow \braket{\lambda_i}{\lambda_j} = 0\).
+\end{quote}
+\end{quote}
+
+    In general, each eigenvalue \(\lambda_k\) will be degenerate
+\(d_k \geq 1\) times.
+
+In that case, there are \(\{\ket{\lambda^a_k}\}, a=1,...,d_k\)
+eigenvectors that generate the eigenspace,
+\(S(\lambda_k) \subset \Hil\), of dimension \(d_k\).
+
+    Subspaces \(S(\lambda_k) \perp S(\lambda_j)\) are orthogonal for
+\(k \neq j\) according to the lemma.\\
+
+In summary: we can always find an orthonormal basis of \(\Hil\), formed
+by eigenvectors of a normal operator \(N\)
+
+\[
+I = \sum_k \sum_{a=1}^{d_k} \ket{\lambda^a_k}\bra{\lambda^a_k} \quad ; \quad \braket{\lambda^a_j}{\lambda^b_k} = \delta_{ab}\delta_{jk}
+\]
+
+The projector onto the eigenspace \(S(\lambda_k)\) is
+
+\[
+P_k = \sum_{a=1}^{d_k} \ketbra{\lambda^a_k}{\lambda^a_k}
+\]
+
+    \subsubsection{Spectrum of Hermitian
+Operators}\label{spectrum-of-hermitian-operators}
+
+The spectrum of a Hermitian operator \(A = A^\dagger\) has two important
+properties: \\
+- 1. The eigenvalues of a Hermitian operator are real
+\(\lambda_i \in {\mathbb R}\). \\
+- 2. The eigenvectors \(\ket{\lambda_i}\) of a Hermitian operator
+associated with distinct eigenvalues are orthogonal \[
+\lambda_i \neq \lambda_j ~~~\Longleftrightarrow~~~ \braket{\lambda_i}{\lambda_j} = 0\, .
+\]
+
+\begin{quote}
+\begin{quote}
+Proof:
+
+1. Take a normalized eigenvector of \(A\), \(\ket{\lambda}\) with
+eigenvalue \(\lambda\). \[
+\lambda = \bra{\lambda}A\ket{\lambda} = (\bra{\lambda}A^\dagger\ket{\lambda})^* = (\bra{\lambda}A\ket{\lambda})^* = \lambda^* .~~~
+\]\\
+\strut \\
+2. In fact, this property holds for normal operators \(N\). Hermitian
+operators are normal. From the eigenvalue equation
+\(N\ket{\lambda_j} = \lambda_j \ket{\lambda_j}\) and
+\(NN^\dagger = N^\dagger N\), it follows that \[
+\bra{\lambda_j}(N^\dagger - \lambda_j^*)(N - \lambda_j) \ket{\lambda_j} = \bra{\lambda_j}(N - \lambda_j)(N^\dagger - \lambda_j^*) \ket{\lambda_j} = 0\,,
+\] from which we get
+\((N^\dagger - \lambda_j^*) \ket{\lambda_j} = 0 \Rightarrow \bra{\lambda_j} N = \bra{\lambda_j} \lambda_j\).
+Then \[
+\bra{\lambda_j}N\ket{\lambda_i} = \lambda_j \braket{\lambda_j}{\lambda_i} = \lambda_i \braket{\lambda_j}{\lambda_i} \, ,
+\] from which it follows that for
+\(\lambda_i \neq \lambda_j \Rightarrow \braket{\lambda_i}{\lambda_j} = 0\).
+\end{quote}
+\end{quote}
+
+    The set of eigenvectors \(\ket{\lambda_i}\) of a Hermitian operator
+forms an orthogonal basis. It can be normalized to form an orthonormal
+basis \[
+\braket{\lambda_i}{\lambda_j} = \delta_{ij}
+\]
+
+    Exercise 1.3.7
+
+Write a function, \(random\_hermitian\), that generates a Hermitian
+matrix of dimension \(d\). \\
+Verify in different cases that the spectrum is real.
+
+    \subsubsection{Spectrum of Unitary
+Operators}\label{spectrum-of-unitary-operators}
+
+The eigenvalues of a unitary operator are pure phases \[
+U^\dagger = U^{-1} ~~~\Longleftrightarrow ~~~\lambda_i = e^{i\phi_i}
+\]
+
+\begin{quote}
+\begin{quote}
+Proof
+\end{quote}
+\end{quote}
+
+Your proof here
+
+    \subsubsection{Spectrum of Proyectors}\label{spectrum-of-proyectors}
+
+\begin{quote}
+\begin{quote}
+Prueba
+
+La ecuación
+\end{quote}
+\end{quote}
+
+\[ P^2 = P ~~~~~\Rightarrow ~~~~~~~~ P^2 \ket{u} = P\ket{u} \]
+
+sólo tiene dos soluciones consistentes
+
+\[
+P\ket{u} = \ket{u}~~~~~~~\hbox{y} ~~~~~~~~~~P\ket{u} = 0
+\]
+
+    \subsubsection{Commuting Operators}\label{commuting-operators}
+
+When two operators commute, certain algebraic properties arise that are
+very advantageous. In a way, they behave more like c-numbers. Let's see
+the first one.
+
+Theorem \\
+Given two operators \(A\) and \(B\) that commute, there exists a basis
+\(\{\ket{\lambda_i}\}\) of simultaneous eigenvectors of both operators,
+that is \[
+A = \lambda_i^A \ketbra{\lambda_i}{\lambda_i} ~~~~,~~~~~ B = \lambda_i^B \ketbra{\lambda_i}{\lambda_i}
+\]
+
+\begin{quote}
+\begin{quote}
+Proof
+\end{quote}
+\end{quote}
+
+Suppose \(A\) and \(B\) commute. Then the action of \(A\)
+\emph{stabilizes} the eigenspaces of \(B\).
+
+That is, if \(\ket{\lambda}\) is an eigenstate of \(B\), then
+\(B\ket{\lambda} = \ket{\mu}\) is also an eigenstate with the same
+eigenvalue. It is straightforward to verify: \[
+A(B\ket{\lambda}) = B(A\ket{\lambda}) = B(\lambda \ket{\lambda}) = \lambda (B \ket{\lambda})
+\]
+
+Therefore, \(\ket{\lambda}\) and \(B\ket{\lambda}\) belong to the
+\emph{same eigenspace}. This is what is meant by \emph{stabilizing the
+subspace}.
+
+If \(\lambda\) is degenerate, this only ensures that
+\(B\ket{\lambda} = \ket{\lambda'}\) belongs to the eigenspace of the
+same eigenvalue \(\lambda\).
+
+This means that within each eigenspace of \(B\), we can choose any basis
+we want. In particular, we can choose a basis that diagonalizes \(A\)
+within that subspace.
+
+    In other words, two operators that commute are simultaneously
+diagonalizable. Their matrices in the basis \(\{\ket{\lambda_i}\}\) are
+
+\[
+A = \begin{bmatrix} \lambda_1^A & 0 & \cdots & 0 \\ 0 & \lambda_2^A & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & \lambda_n^A \end{bmatrix}, \quad
+B = \begin{bmatrix} \lambda_1^B & 0 & \cdots & 0 \\ 0 & \lambda_2^B & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & \lambda_n^B \end{bmatrix}
+\]
+
+    \subsubsection{Singular Values}\label{singular-values}
+
+Let \(A \in \Lin(\Hil)\) be a general operator. Then \(A^\dagger A\) is
+a Hermitian operator that has non-negative eigenvalues
+\(\lambda_i \geq 0\)
+
+\[
+A^\dagger A \ket{\lambda_i} = \lambda_i \ket{\lambda_i} \quad \Rightarrow \quad \lambda_i = \bra{\lambda_i} A^\dagger A \ket{\lambda_i} = \| A \ket{\lambda_i} \|^2 \geq 0
+\]
+
+Therefore, we can take its square root
+\(s_i = \sqrt{\lambda_i} \geq 0\).
+
+Definition: The singular values of \(A \in \Lin(\Hil)\) are defined as
+\(s_i = \sqrt{\lambda_i}\) where \(\lambda_i\) are the eigenvalues of
+the operator \(A^\dagger A\).
+
+    Singular values are very important to characterize the difference
+between two operators, as we will see later.
+
+    \#\# Operator decompositions \hyperref[top]{<<<}
+
+    \#\#\# Spectral decomposition
+
+    Theorem: Spectral Decomposition\\
+\strut \\
+For every normal operator \(N\) there exists a basis of orthonormal
+eigenvectors, \(\{\ket{\lambda^a_k}\}\), such that\\
+\(N\) admits the following spectral decomposition \[
+N = \sum_{k=1}^d \lambda_k P_k\, .
+\] \\
+Here \(d = \mathrm{dim}(\Hil)\) and
+\(P_k = \sum_{a=1}^{g_k} \ketbra{\lambda^a_k}{\lambda^a_k}\) is the
+projector onto the eigenspace \(S(\lambda_k)\), where \(\lambda_k\) is
+\(g_k\)-fold degenerate.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{A} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{A}\PY{p}{,} \PY{n}{prefix} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{A = }\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+ 
+            
+\prompt{Out}{outcolor}{2}{}
+    
+    $$
+A = 
+\begin{bmatrix}
+1 & 1  \\
+ -1 & 1  \\
+ \end{bmatrix}
+$$
+
+    
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ Realizamos la descomposición espectral}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{eigvals}\PY{p}{,} \PY{n}{eigvecs} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{eig}\PY{p}{(}\PY{n}{A}\PY{p}{)}
+
+\PY{n}{eigvec0} \PY{o}{=} \PY{n}{eigvecs}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{P0} \PY{o}{=} \PY{n}{tQ}\PY{o}{.}\PY{n}{ket\PYZus{}bra}\PY{p}{(}\PY{n}{eigvec0}\PY{p}{,}\PY{n}{eigvec0}\PY{p}{)}
+\PY{n}{display}\PY{p}{(}\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{P0}\PY{p}{,}\PY{n}{prefix}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{P\PYZus{}0=}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{eigvec1} \PY{o}{=} \PY{n}{eigvecs}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{P1} \PY{o}{=} \PY{n}{tQ}\PY{o}{.}\PY{n}{ket\PYZus{}bra}\PY{p}{(}\PY{n}{eigvec1}\PY{p}{,}\PY{n}{eigvec1}\PY{p}{)}
+\PY{n}{display}\PY{p}{(}\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{P1}\PY{p}{,}\PY{n}{prefix}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{P\PYZus{}1=}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+
+\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{verificamos completitud}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{P0}\PY{o}{+}\PY{n}{P1}\PY{p}{,}\PY{n}{prefix}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{P\PYZus{}0 + P\PYZus{}1=}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    $$
+P_0=
+\begin{bmatrix}
+\frac{1}{2} & - \frac{i}{2}  \\
+ \frac{i}{2} & \frac{1}{2}  \\
+ \end{bmatrix}
+$$
+
+    
+    $$
+P_1=
+\begin{bmatrix}
+\frac{1}{2} & \frac{i}{2}  \\
+ - \frac{i}{2} & \frac{1}{2}  \\
+ \end{bmatrix}
+$$
+
+     
+            
+\prompt{Out}{outcolor}{4}{}
+    
+    $$
+P_0 + P_1=
+\begin{bmatrix}
+1 & 0  \\
+ 0 & 1  \\
+ \end{bmatrix}
+$$
+
+    
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{A\PYZus{}descomp\PYZus{}espect} \PY{o}{=} \PY{n}{eigvals}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{*}\PY{n}{P0}\PY{o}{+}\PY{n}{eigvals}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{*}\PY{n}{P1}
+
+\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{A\PYZus{}descomp\PYZus{}espect}\PY{p}{,} \PY{n}{prefix} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{lambda\PYZus{} 0 P\PYZus{}0 + }\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{lambda\PYZus{}1 P\PYZus{}1 =  }\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+ 
+            
+\prompt{Out}{outcolor}{6}{}
+    
+    $$
+\lambda_ 0 P_0 + \lambda_1 P_1 =  
+\begin{bmatrix}
+1 & 1  \\
+ -1 & 1  \\
+ \end{bmatrix}
+$$
+
+    
+
+    The matrix \(A_{ij}\) that represents \(A\) in the basis
+\(\ket{\lambda_i}\) is diagonal
+
+\[
+A_{ij} = \bra{\lambda^a_i} A\ket{\lambda^b_j} =  \lambda_k \delta_{kj} \delta_{ab} =\begin{bmatrix} \lambda_1 &  &  &  &  \\ & \ddots & & & \\ & & \lambda_2 & &  \\&  & & \ddots & \\  & & & &  \lambda_N \end{bmatrix}
+\] where \(\lambda_k\) appears repeated \(d_k\) times.
+
+    \begin{verbatim}
+<b>Note:</b>
+\end{verbatim}
+
+The identity operator has every vector as an eigenvector
+\(I\ket{v} = \ket{v}\), with eigenvalues \(\lambda_i = 1\). Therefore,
+in any basis, the matrix associated to \(I\) has diagonal form \[
+I_{ij} = \delta_{ij} = \begin{pmatrix} 1 &  &  &  \\ & 1 & &  \\ & & \ddots & \\ & & &  1 \end{pmatrix}
+\]
+
+The spectral decomposition of \(I\) is none other than the completeness
+relation, which holds \emph{for any basis}, since all bases are
+eigenbases of \(I\) \[
+I ~=~ \sum_{i=1}^N \ketbra{\lambda_i}{\lambda_i} ~=~ \sum_{i=1}^N \ketbra{e_i}{e_i}
+\]
+
+    Exercise 1.3.8
+
+Write a Python function \(spectral\_decomp\) that returns the two lists
+\(\lambda_i\) and \(P_i\) associated with the spectral decomposition of
+a diagonalizable operator \(A = \sum_i \lambda_i P_i\).
+
+    Suppose we only know the spectrum of eigenvalues \(\{\lambda_i\}\) of
+\(A\) and not its eigenvectors. Even so, the projector \(P_i\) can be
+written as \[
+P_i = \prod_{k \neq i} \frac{A - \lambda_k I}{\lambda_i - \lambda_k}
+\]
+
+    By construction, it holds that \[
+P_i \ket{\lambda_j} = \delta_{ij} \ket{\lambda_j} \quad , \quad AP_i = \lambda_i P_i \, .
+\]
+
+Note that the range of \(P_i\) is included by construction without
+needing to know the basis generating the subspace
+\(\{\ket{\lambda_{i,p}}\}\).
+
+    \textbf{Spectral Representation of Projectors}
+
+Let \(A\) be a normal matrix with eigenvalues \(\lambda_i\) and
+eigenvectors
+\(\ket{\lambda_{i,p}}, p=1,...,g_i = \mathrm{deg}(\lambda_i)\),
+
+\[
+P_i = \sum_{p=1}^{g_i} \ket{\lambda_{i,p}}\bra{\lambda_{i,p}} 
+\]
+
+is a projector onto the eigenspace associated with \(\lambda_i\).
+
+    \#\#\# Polar Decomposition (PD)
+
+Theorem: \\
+Every operator \(A \in \Lin(\Hil)\) admits a polar decomposition
+\(A = U R\) where \(U\) is a unitary operator, and \(R\) is a positive
+semi-definite operator (having only non-negative eigenvalues).
+
+    \begin{itemize}
+\item
+  The polar decomposition is \emph{unique} and generalizes the polar
+  representation of complex numbers \(z = r e^{i\phi}\) to operators.\\
+\item
+  The fact that \(r \geq 0\) corresponds to \(R\) being positive
+  semi-definite.\\
+\item
+  The factor \(e^{i\phi}\) is analogous to the fact that a unitary
+  operator, as we will see, has eigenvalues that are pure phases.
+\end{itemize}
+
+    Exercise 1.3.9
+
+Write a function \(random\_unitary\) that generates a unitary matrix of
+dimension \(d\).\\
+Check in various cases that its spectrum consists of phases.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}Método para construir una matriz unitaria arbitraria usando la descomposición polar\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{n}{d} \PY{o}{=} \PY{l+m+mi}{3}
+\PY{n}{A} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{matrix}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{n}{d}\PY{p}{,}\PY{n}{d}\PY{p}{)}\PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{n}{d}\PY{p}{,}\PY{n}{d}\PY{p}{)} \PY{o}{*} \PY{l+m+mi}{1}\PY{n}{j}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}u, s, vh = linalg.svd(A, full\PYZus{}matrices=False)}
+\PY{n}{u}\PY{p}{,}\PY{n}{r} \PY{o}{=} \PY{n}{la}\PY{o}{.}\PY{n}{polar}\PY{p}{(}\PY{n}{A}\PY{p}{)}
+    
+\PY{n}{R} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{matrix}\PY{p}{(}\PY{n}{r}\PY{p}{)} 
+\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ verificamos que R sólo tiene autovalores no\PYZhy{}negativos }\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{Reigval}\PY{p}{,} \PY{n}{Reigvec} \PY{o}{=} \PY{n}{la}\PY{o}{.}\PY{n}{eig}\PY{p}{(}\PY{n}{R}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{Reigval}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{U}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{matrix}\PY{p}{(}\PY{n}{u}\PY{p}{)} 
+\PY{n}{display}\PY{p}{(}\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{U}\PY{p}{,} \PY{n}{prefix}\PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{U = }\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+
+\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{} Verifiquemos unitariedad \PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{n}{display}\PY{p}{(}\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{U}\PY{o}{.}\PY{n}{getH}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{U}\PY{p}{)}\PY{p}{,}\PY{n}{prefix}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{U\PYZca{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{dagger\PYZcb{}U = }\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+
+\PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{} verificamos que los autovalores de U son fases\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{p}{[}\PY{n}{la}\PY{o}{.}\PY{n}{eig}\PY{p}{(}\PY{n}{U}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{*}\PY{n}{la}\PY{o}{.}\PY{n}{eig}\PY{p}{(}\PY{n}{U}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{conjugate}\PY{p}{(}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{d}\PY{p}{)}\PY{p}{]}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[2.431+0.j 0.08 +0.j 0.686+0.j]
+    \end{Verbatim}
+
+    $$
+U = 
+\begin{bmatrix}
+0.6448584703 - 0.0545397974 i & 0.27980105 + 0.6601651084 i & 0.2589661709 - 0.0035900099 i  \\
+ 0.3682011215 + 0.3892475176 i & 0.4452677423 - 0.3869059114 i & -0.322586681 + 0.5107764587 i  \\
+ -0.4459615381 + 0.30857021 i & 0.3705983147 + 0.0243052369 i & 0.7163582861 + 0.2340933202 i  \\
+ \end{bmatrix}
+$$
+
+    
+    $$
+U^{\dagger}U = 
+\begin{bmatrix}
+1 & 0 & 0  \\
+ 0 & 1 & 0  \\
+ 0 & 0 & 1  \\
+ \end{bmatrix}
+$$
+
+    
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+array([1.-0.j, 1.+0.j, 1.-0.j])
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \subsubsection{Singular Value Decomposition
+(SVD)}\label{singular-value-decomposition-svd}
+
+    Singular Value Decomposition Theorem: SVD\\
+\strut \\
+Let \(A\) be a complex \(m\times n\) matrix. Then it admits the
+following form (singular value decomposition)\\
+\strut \\
+\strut \\
+\[
+A = U \,\Sigma\, V^{\dagger} \,,
+\]\\
+\strut \\
+where \(U \in U(m)\), \(V \in U(n)\) are square unitary matrices and
+\(\Sigma\) is a rectangular \(m \times n\) matrix with the nonzero
+singular values \(s_1, ..., s_r\) of \(A\) on the diagonal, where
+\(r \leq \min(m,n)\).
+
+    \emph{Proof}:
+
+Notice that \(A\) is the matrix of a linear map \(\Hil_n \to \Hil_m\),
+i.e.~if \(\ket{u}\in \Hil_n\) then \(\ket{v} = A\ket{u} \in \Hil_m\).
+
+Of utmost importance will be the linear endomorphisms
+\(A^\dagger\! A\in \Lin(\Hil_n)\) and \(AA^\dagger \in \Lin(\Hil_m)\).
+
+Let us start buy showing two things
+
+\begin{itemize}
+\tightlist
+\item
+  they have the same eigenvalues. Indeed, if \(\ket{u}\in \Hil_n\) is
+  eigenvector of \(A^\dagger A\) then \(\ket{v} = A\ket{v} \in \Hil_m\)
+  is an eigenvector of \(AA^\dagger\) with the same eigenvalue.
+\end{itemize}
+
+\[
+AA^\dagger \ket{v} = AA^\dagger (A\ket{u}) = A (A^\dagger A\ket{u}) = A \lambda\ket{u} = \lambda A\ket{u} = \lambda \ket{v}
+\]
+
+    \begin{itemize}
+\tightlist
+\item
+  the eigenvalues are real an non-negative. Reality comes out from the
+  hermiticity of \(A^\dagger \! A\in \Lin(H_n)\). Now
+\end{itemize}
+
+\[
+\lambda_i = \bra{\lambda_i}A^\dagger\! A\ket{\lambda_i} = \|A\ket{\lambda_i}\|^2 \ge 0.
+\]\\
+Ordered in decreasing order, there are \(r\) nonzero eigenvalues,
+\(\lambda_1\ge\lambda_2\ge\cdots\ge\lambda_r>0\). \\
+Their square roots
+\(\sqrt{\lambda_1}\ge\sqrt{\lambda_2}\ge\cdots\ge\sqrt{\lambda_r}>0\)
+define the so‐called singular values \(s_i = \sqrt{\lambda_i}\) of the
+operator \(A\).
+
+    Start by diagonalizing \(A^\dagger A\), and obtain an orthonormal basis
+\(\ket{\lambda_i}\). Taking these as column vectors, we can form the
+following matrices\\
+\begin{eqnarray}
+V(n\times n) &=& \left(\rule{0mm}{5mm} \ket{\lambda_1},\ket{\lambda_2},....,\ket{\lambda_r},\ket{\lambda_{r+1}},...,\ket{\lambda_n}\right)
+\nonumber \\ \rule{0mm}{18mm} 
+\Sigma(m\times n) &=&  \rule{0mm}{10mm} 
+\overbrace{
+\left.\left(
+\begin{array}{ccccccc} 
+\sqrt{\lambda_1} &\cdots  &    &  & & &  0  \\  \vdots & \ddots & & & & & \vdots  \\  & & \sqrt{\lambda_r} & & & &  \\
+   & &  & 0  & &  &    \\ & & & & & \ddots &  \\  0 & &\cdots  & & & & 0  \\ \vdots & &&&& & \vdots \\ 0 & & \cdots & & & & 0
+\end{array}
+\right)\, \right\}  }^{n} m
+\nonumber \\ \rule{0mm}{18mm}
+U(m\times m) &=& \left( \rule{0mm}{3mm} \frac{1}{\sqrt{\lambda_1}}A\ket{\lambda_1}, \frac{1}{\sqrt{\lambda_2}}A\ket{\lambda_2}, ...., 
+\frac{1}{\sqrt{\lambda_r}}A\ket{\lambda_r}, \ket{\mu_{r+1}},...\ket{\mu_m} \right) \, .
+\nonumber 
+\end{eqnarray} where \(\ket{\mu_{r+1}},\dots,\ket{\mu_m}\) complete the
+orthonormal basis of vectors.\\
+
+    Now we can operate\\
+\begin{eqnarray}
+U\Sigma V^\dagger &=& \left( \rule{0mm}{3mm} \frac{1}{\sqrt{\lambda_1}}A\ket{\lambda_1}, \frac{1}{\sqrt{\lambda_2}}A\ket{\lambda_2}, ...., 
+\frac{1}{\sqrt{\lambda_r}}A\ket{\lambda_r}, \ket{\mu_{r+1}},...\ket{\mu_m} \right)
+\begin{pmatrix} \sqrt{\lambda_1}\bra{\lambda_1} \\ \sqrt{\lambda_2}\bra{\lambda_2}  \\ \vdots \\ \sqrt{\lambda_r}\bra{\lambda_r} \\ 0 \\ \vdots \\ 0 \end{pmatrix} \nonumber\\
+&=& A \sum_{i=1}^r \ket{\lambda_i}\bra{\lambda_i} = A \sum_{i=1}^n \ket{\lambda_i}\bra{\lambda_i} = A\, , \nonumber
+\end{eqnarray}
+
+were we used that \(A\ket{\lambda_i}=0\) for \(i>r\). This completes the
+proof. Let us however gain some insight into the nature of matrices
+\(U\) and \(V\).
+
+    The following equations hold
+
+\begin{align}
+A^\dagger\! A &= V\,\Sigma^\dagger U\,U^\dagger \Sigma\,V^\dagger = V\,(\Sigma^\dagger \Sigma)\,V^\dagger \\[6pt]
+A A^\dagger &= U\,\Sigma V^\dagger V\,\Sigma^\dagger U^\dagger = U\,(\Sigma \Sigma^\dagger)\,U^\dagger
+\end{align}
+
+or equivalently
+
+\[
+\Sigma^\dagger \Sigma  = V^\dagger A^\dagger A V
+\quad,\quad
+\Sigma \Sigma^\dagger = U^\dagger A A^\dagger U
+\]
+
+The matrices
+
+\[
+\Sigma \Sigma^\dagger = \mathrm{diag}(\lambda_1,\dots,\lambda_r,0,\dots,0)_{\,m\times m}
+\quad,\quad
+\Sigma^\dagger \Sigma = \mathrm{diag}(\lambda_1,\dots,\lambda_r,0,\dots,0)_{\,n\times n}
+\]
+
+are diagonal. Therefore:
+
+\begin{itemize}
+\tightlist
+\item
+  The matrix \(V\) diagonalizes \(A^\dagger A\). Hence its columns are
+  the \(n\) eigenvectors of \(A^\dagger A\).
+\item
+  The matrix \(U\) diagonalizes \(A A^\dagger\). Hence its columns are
+  the \(m\) eigenvectors of \(A A^\dagger\).
+\end{itemize}
+
+    This looks like an efficient way to find the matrices \(U\) and \(V\).
+However this is true only up to diagonal unitaries
+
+Notice that any \(\tilde V = VD\) and \(\tilde U = UF\) such that
+
+\[
+D^\dagger \Sigma^\dagger \Sigma D = \Sigma^\dagger \Sigma~~~~,~~~~~
+F^\dagger \Sigma \Sigma^\dagger  F = \Sigma \Sigma^\dagger 
+\]
+
+will lead to a different equivalently valid solution of the form
+
+\[
+\Sigma^\dagger \Sigma  = \tilde V^\dagger A^\dagger A \tilde V
+\quad,\quad
+\Sigma \Sigma^\dagger = \tilde U^\dagger A A^\dagger \tilde U
+\] Now\\
+\[
+\tilde A = \tilde U \Sigma \tilde V^\dagger = UD\Sigma F^\dagger V^\dagger \neq U\Sigma   V^\dagger = A
+\]\\
+So, not any element in the equivalence class gives the SVD of \(A\)
+
+    Note that the rank of \(U\) and \(V\) is \(r \leq m \leq n\). Therefore,
+there is an ambiguity in the choice of eigenvectors of \(U\) and \(V\)
+associated with the zero singular values.
+
+    Let's state this theorem for matrices. Specifically, the theorem refers
+to an \(m \times n\) matrix. This type of matrix corresponds to
+operators \(O \in \Lin(\Hil_A, \Hil_B)\) between spaces of dimensions
+\(m\) and \(n\).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{NumPy has the `svd` function to perform singular value decomposition.}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{m}\PY{o}{=}\PY{l+m+mi}{3}
+\PY{n}{n}\PY{o}{=}\PY{l+m+mi}{2}
+
+\PY{n}{A} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{matrix}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randn}\PY{p}{(}\PY{n}{m}\PY{p}{,}\PY{n}{n}\PY{p}{)}\PY{o}{+} \PY{l+m+mi}{1}\PY{n}{j}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randn}\PY{p}{(}\PY{n}{m}\PY{p}{,}\PY{n}{n}\PY{p}{)}\PY{p}{)}
+\PY{n}{display}\PY{p}{(}\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{A}\PY{p}{,}\PY{n}{prefix}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{A=}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{the shape of A is :}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{A}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+
+
+\PY{n}{u}\PY{p}{,} \PY{n}{s}\PY{p}{,} \PY{n}{vh} \PY{o}{=} \PY{n}{la}\PY{o}{.}\PY{n}{svd}\PY{p}{(}\PY{n}{A}\PY{p}{,} \PY{n}{full\PYZus{}matrices}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+
+\PY{n+nb}{print}\PY{p}{(} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{the shape of u =}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{u}\PY{o}{.}\PY{n}{shape}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ s =}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{s}\PY{o}{.}\PY{n}{shape}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ v =}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{vh}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    $$
+A=
+\begin{bmatrix}
+-0.5236930728 + 1.9118334053 i & 0.5767927192 - 2.0843848053 i  \\
+ -0.3643731504 - 1.0819914804 i & 0.7246113054 - 0.5586193168 i  \\
+ -0.9682747944 - 1.672583164 i & -0.9877737104 + 0.3425877513 i  \\
+ \end{bmatrix}
+$$
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+the shape of A is : (3, 2)
+the shape of u = (3, 3)  s = (2,)  v = (2, 2)
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{U}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{matrix}\PY{p}{(}\PY{n}{u}\PY{p}{)}
+\PY{n}{S}\PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{m}\PY{p}{,} \PY{n}{n}\PY{p}{)}\PY{p}{)}
+\PY{n}{np}\PY{o}{.}\PY{n}{fill\PYZus{}diagonal}\PY{p}{(}\PY{n}{S}\PY{p}{,}\PY{n}{s}\PY{p}{)}
+\PY{n}{S} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{matrix}\PY{p}{(}\PY{n}{S}\PY{p}{)}
+\PY{n}{V}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{matrix}\PY{p}{(}\PY{n}{vh}\PY{p}{)}\PY{o}{.}\PY{n}{getH}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{display}\PY{p}{(}\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{U}\PY{p}{,}\PY{n}{prefix}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{U=}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+\PY{n}{display}\PY{p}{(}\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{S}\PY{p}{,}\PY{n}{prefix}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{S=}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+\PY{n}{display}\PY{p}{(}\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{V}\PY{p}{,}\PY{n}{prefix}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{V=}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{display}\PY{p}{(}\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{S}\PY{n+nd}{@S}\PY{o}{.}\PY{n}{getH}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{,}\PY{n}{prefix}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{S S\PYZca{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{dagger\PYZcb{} =}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}\PYZsq{}\PYZsq{}\PYZsq{}Verifiquemos unitariedad\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{c+c1}{\PYZsh{}display(array\PYZus{}to\PYZus{}latex(np.dot(V.getH(),V),prefix=\PYZsq{}V\PYZca{}\PYZob{}\PYZbs{}dagger\PYZcb{}V =\PYZsq{}))}
+\PY{c+c1}{\PYZsh{}display(array\PYZus{}to\PYZus{}latex(np.dot(U.getH(),U),prefix=\PYZsq{}U\PYZca{}\PYZob{}\PYZbs{}dagger\PYZcb{}U =\PYZsq{}))}
+\end{Verbatim}
+\end{tcolorbox}
+
+    $$
+U=
+\begin{bmatrix}
+-0.1216646101 + 0.8252425506 i & -0.1613739097 - 0.3128773077 i & 0.321129708 + 0.2776948279 i  \\
+ -0.1802697442 - 0.1287928363 i & 0.1140421168 - 0.6235401084 i & 0.2988391186 - 0.6780874093 i  \\
+ -0.0807466501 - 0.4985656009 i & -0.6396895224 - 0.2550601797 i & 0.3406188724 + 0.3932336755 i  \\
+ \end{bmatrix}
+$$
+
+    
+    $$
+S=
+\begin{bmatrix}
+3.4167487815 & 0  \\
+ 0 & 1.9751666399  \\
+ 0 & 0  \\
+ \end{bmatrix}
+$$
+
+    
+    $$
+V=
+\begin{bmatrix}
+0.8073630659 & 0.5900549803  \\
+ -0.5677972825 + 0.1605338775 i & 0.7769082036 - 0.2196560114 i  \\
+ \end{bmatrix}
+$$
+
+    
+    $$
+S S^{\dagger} =
+\begin{bmatrix}
+11.67417224 & 0 & 0  \\
+ 0 & 3.90128326 & 0  \\
+ 0 & 0 & 0  \\
+ \end{bmatrix}
+$$
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Perform the multiplication U * S * V\PYZca{}dagger}
+\PY{n}{A\PYZus{}recons} \PY{o}{=} \PY{n}{U} \PY{o}{@} \PY{n}{S} \PY{o}{@} \PY{n}{V}\PY{o}{.}\PY{n}{getH}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Display the result}
+\PY{c+c1}{\PYZsh{}display(array\PYZus{}to\PYZus{}latex(A\PYZus{}reconstructed, prefix=\PYZsq{}U S V\PYZca{}\PYZbs{}\PYZbs{}dagger = \PYZsq{}))}
+
+\PY{n}{np}\PY{o}{.}\PY{n}{allclose}\PY{p}{(}\PY{n}{A}\PY{p}{,} \PY{n}{A\PYZus{}recons}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+True
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \# Operator trace
+
+\hyperref[top]{<<<}
+
+    Definition: The trace of an operator \(A\) is defined as the sum \\
+\[
+\tr A = \sum_i \bra{e_i} A \ket{e_i} = \sum_i A_{ii}
+\] of its diagonal matrix elements in any orthonormal basis
+\(\{\ket{e_i}\}\)
+
+    To be consistent, this definition requires proving that the choice of
+basis does not matter.
+
+    Lemma:\(~\) the trace of an operator is independent of the basis in
+which it is calculated.
+
+\begin{quote}
+\begin{quote}
+Proof
+
+\begin{eqnarray}
+{\rm tr} A  &=&\sum_i A_{ii} =\sum_{i} \bra{i}A\ket{i} =\sum_{i} \bra{i}A\left( \sum_j\ketbra{\tilde j}{\tilde j}\right)\ket{i}
+\nonumber\\
+&=& \sum_{ij}\bra{i}A\ket{\tilde j} \braket{\tilde j}{i} = \sum_{ij}\braket{\tilde j}{i}\bra{i}A\ket{\tilde j}  \nonumber\\
+&=& \sum_{j} \bra{\tilde j}\left(\sum_i\ketbra{i}{i}\right) A \ket{\tilde j}= \sum_{j} \bra{\tilde j}A\ket{\tilde j}\nonumber\\
+&=& \sum_j \tilde A_{jj}
+\end{eqnarray}
+\end{quote}
+\end{quote}
+
+    By this important property, the trace of \(A\) coincides with the sum of
+its eigenvalues:
+
+\[
+\mathrm{tr} \, A = \sum_i \bra{\lambda_i} A \ket{\lambda_i} = \sum_i \lambda_i
+\]
+
+provided that \(A\) is diagonalizable in the basis
+\(\{\ket{\lambda_i}\}\).
+
+\[
+A\ket{\lambda_j} = \lambda_i \ket{\lambda_i}
+\]
+
+    The trace enjoy a series of important properites
+
+\begin{itemize}
+\tightlist
+\item
+  It is al linear function \[
+  {\rm tr} (A + B ) = {\rm tr}A + {\rm tr}B
+  \]
+\end{itemize}
+
+    \begin{itemize}
+\tightlist
+\item
+  It is symmetric \[
+  \tr \, AB= \tr \, BA 
+  \] From here the cyclicity follows immediately \[
+  \tr \, AB...C = \tr\,  A(B...C) = \tr \, (B...C) A = \tr\,  B...C A
+  \]
+\end{itemize}
+
+    \begin{itemize}
+\tightlist
+\item
+  Let the operator \$A = \ketbra{u}{v}\$ then, for any operator \$B\$ it
+  holds that
+  \[ \tr \left(B\rule{0mm}{5mm}\ketbra{u}{v}\right) = \sum_i \bra{e_i} B\ket{u}\braket{v}{e_i} = \bra{v}\left(\sum_i \ketbra{e_i}{e_i}\right) B\ket{u} = \bra{v}B \ket{u}
+  \]
+\end{itemize}
+
+    \subsubsection{\texorpdfstring{\(\Lin(\Hil)\) as a Hilbert
+space}{\textbackslash Lin(\textbackslash Hil) as a Hilbert space}}\label{linhil-as-a-hilbert-space}
+
+    To transform \$\Lin(\Hil)\$ into a Hilbert space it is only necessary to
+define a Hermitian inner product
+
+    In a basis we have that
+
+\[
+(A,B) = \sum_{ij} A^\dagger_{ij} B_{ji} = \sum_{ij} A^*_{ji} B_{ji}
+\]
+
+whereas
+
+\[
+(B,A) = \sum_{ij} B^\dagger_{ij} A_{ji} = \sum_{ij} B^*_{ji} A_{ji} =
+ \sum_{ij} A_{ji}B^*_{ji} 
+\]
+
+It follows that \$(B,A) = (A,B)\^{}*\$. Moreover, it is trivial to check
+that \$(A,B+C) = (A,B) + (A,C)\$, so it is a sesquilinear or Hermitian
+inner product.
+
+    \subsubsection{Operator norm and
+distance}\label{operator-norm-and-distance}
+
+    A \textbf{norm} defined on \$\Lin(\Hil)\$ is a real function \$A
+\to \textbar{} A\textbar{} \in {\mathbb R}\$ with the properties that
+were defined in a
+\href{../01_Formalismo/01_Vectores_en.ipynb\#norm}{previous section}
+
+    
+
+    The seemeingly weird appearance of the factor \(p\) is arrange so that
+homogeneity of degree one is achieved
+
+\[
+\| \lambda A \|_p = \lambda \| A \|_p
+\]
+
+    The three most frequent cases are
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Trace norm}
+\end{itemize}
+
+\[p=1 ~~\Rightarrow ~~ | A |_1 =  {\rm tr} \sqrt{A^\dagger A}\]
+
+This norm is equal to the sum of the singular values of \(A\)
+\(~\Rightarrow ~| A |_1  = \sum_i^r s_i\), where \(s_i^2\) are the
+eigenvalues of \(A^\dagger A\).
+
+    \begin{itemize}
+\tightlist
+\item
+  \textbf{Frobenius norm}
+\end{itemize}
+
+\[ p=2 ~~\Rightarrow ~~ | A |_2 =  \sqrt{{ \rm tr} A^\dagger A }
+\]
+
+The Frobenius norm is the one naturally derived from the inner product
+\(~~
+|A|_2 = \sqrt{(A,A)}\)
+
+    \begin{itemize}
+\tightlist
+\item
+  \textbf{Spectral norm}
+\end{itemize}
+
+\[p=\infty ~~\Rightarrow ~~  | A |_\infty = \lim_{p\to \infty} | A |_p
+\]
+
+It can be shown that the spectral norm is equivalent to the following
+definition
+
+\[
+|A|_\infty = \hbox{max}_{\ket{u}\in \Hil}\{ \|A\ket{u}\| ~~\hbox{with} ~ \|\ket{u}\| = 1\}
+\]
+
+    Ejercicio 1.3.10\(~\)
+
+write, in python, a function 𝑡𝑟𝑎𝑐𝑒\_𝑛𝑜𝑟𝑚(𝐴) , that calculates the trace
+norm of an operator.
+
+    \subsubsection{Trace distance}\label{trace-distance}
+
+    Any norm allows one to define a notion of \emph{distance} or
+\emph{difference} between two operators.
+
+    
+
+    \# Linear maps
+
+\hyperref[top]{<<<}
+
+    Linear maps form themselves a vector space
+\({\cal E} \in T(\Hil_1,\Hil_2)\).
+
+    
+
+    \#\# Classes of linear maps
+
+    \begin{itemize}
+\tightlist
+\item
+  \textbf{Trace preserving map}
+\end{itemize}
+
+\({\cal E}\) is \emph{trace preserving} map if, for any \(A \in U\) \[
+Tr({\cal E}(A)) = Tr(A) 
+\]
+
+    \begin{itemize}
+\tightlist
+\item
+  \textbf{Positive map}
+\end{itemize}
+
+Remember that \(\hbox{Pos}(\Hil) \subset \Lin(\Hil)\) is the subset of
+\emph{positive semi-definite linear} operators on a Hilbert space
+\(\Hil\)
+
+\[
+A \in \hbox{Pos}(U) \Leftrightarrow \braket{\psi}{A\psi}\geq 0 ~~~~~ \forall{\psi}\in U
+\]
+
+\({\cal E}\in T(\Hil_1,\Hil_2)\) is a \emph{positive linar map} if it
+maps \[
+ A\in \hbox{Pos}(\Hil_1) \to {\cal E}(A) \in \hbox{Pos}(\Hil_2)
+\]
+
+    \begin{itemize}
+\tightlist
+\item
+  \textbf{Hermiticity preserving maps}
+\end{itemize}
+
+\({\cal E}\in T(\Hil_1,\Hil_2)\) is an \emph{hermiticity preserving map}
+if and only if it maps the subspaces of hermitian operators
+\(\hbox{Her}(\Hil) \in \Lin(\Hil)\)
+
+\[
+ A\in \hbox{Her}(\Hil_1) \to {\cal E}(A) \in \hbox{Her}(\Hil_2)
+\]
+
+    \# Functions of Operators
+
+\hyperref[top]{<<<}
+
+    Functions of operators are, in general non-linear maps
+\(f:\Lin(\Hil)\to \Lin(\Hil)\) which are defined after some complex
+valued function \(f(z):{\mathbb C}\to {\mathbb C}\).
+
+    \#\# Analytic functions
+
+    We are used to writing functions \emph{of a real or complex variable}.
+For example \$f(x)= x\^{}2\$, or \$ f(z) = e\^{}z\$.
+
+We would like to give meaning to the function \emph{of an operator} \$ A
+\to f(A) \$
+
+    In the case that \$f(z)\$ is an analytic function expressible as a
+Taylor series around \$x=0\$
+
+\[
+f(z) = \sum_{n=0}^\infty \frac{1}{n!} f^{(n)}(0)\,  z^n
+\]
+
+we will take as \textbf{definition} the \emph{same series} changing the
+argument \$x\to A\$
+
+\[
+f(A) = \sum_{n=0}^\infty \frac{1}{n!} f^{(n)}(0)\,  A^n
+\]
+
+    \begin{verbatim}
+<b>Note:</b> 
+\end{verbatim}
+
+1. In the same way that, for analytic functions, \(f(z)^* = f(z^*)\),
+the above definition also ensures that \(f(A)^\dagger = f(A^\dagger)\)
+
+    \subsubsection{Exponential of an
+operator}\label{exponential-of-an-operator}
+
+the exponential of a function \(z\to e^z\) motivates the analogous
+definition of \emph{exponential of an operator}
+
+\[
+\exp(A) = e^A = I + A + \frac{1}{2} A^2 + \frac{1}{3!} A^3 + ...
+\]
+
+    An important property of the exponential \$e\^{}x e\^{}y =
+e\^{}\{x+y\}\$, \textbf{does not} translate in general to operators.
+
+It will be \emph{only true when they commute with each other}.
+
+For the generic case we have two options to work around
+
+    
+
+    We see that
+
+\begin{itemize}
+\tightlist
+\item
+  If \$A\$ and \$B\$ commute,
+\end{itemize}
+
+\([A,B]=0 ~\Leftrightarrow ~e^A e^B = e^{A+B}\)
+
+    \begin{itemize}
+\tightlist
+\item
+  If the commutator of \$A\$ and \$B\$ is a c-number
+\end{itemize}
+
+\[[A,B]= c I  ~\Leftrightarrow ~  e^A e^B = e^{A+B } e^{ \frac{c}{2}}\]
+
+    \begin{itemize}
+\tightlist
+\item
+  The inverse of \$e\^{}A\$ is \$e\^{}\{-A\}\$
+\end{itemize}
+
+\[[A,A]=0 \Rightarrow e^A e^{-A} = e^{A-A} = e^0 = I\]
+
+    The converse of the BCH formula is the \emph{Zassenhaus expression}
+
+\[
+e^{A+B} ~=~ e^{A} e^{B} e^{-\frac{1}{2}[A,B]} e^{\frac{1}{6} \left( \rule{0mm}{3mm}2[B,[A,B]]+[A,[A,B]]\right)} \cdots
+\]
+
+Where the dots involve exponentials of higher nested operators. This
+leads easily to the following theorem
+
+    \begin{quote}
+\begin{quote}
+Proof
+
+Using the BCH formula \begin{align}
+\lim_{n\to\infty}\left(e^{A/n} e^{B/n}\right)^n &= \lim_{n\to\infty}\left( e^{\left({A/n+B/n + \frac{1}{2}[A,B]/n^2 + \frac{1}{12}[A,[A,B]]/n^3+ \frac{1}{12}[B,[B,A]]/n^3 + ...}\right)}\right)^n  \\ 
+&= \lim_{n\to\infty}\left( e^{\left({A+B + \frac{1}{2}[A,B]/n + \frac{1}{12}[A,[A,B]]/n^2+ \frac{1}{12}[B,[B,A]]/n^3 + ...}\right)}\right) \\
+&= e^{(A+B)}
+\end{align}
+\end{quote}
+\end{quote}
+
+    \subsubsection{Unitary operators from Hermitian
+ones}\label{unitary-operators-from-hermitian-ones}
+
+Every unitary operator \$U\$ can be expressed as the imaginary
+exponential of a Hermitian operator \$H\$
+
+\[
+U = e^{i H}
+\] Indeed, \begin{eqnarray}
+U^\dagger &=& \left( e^{iH}\right)^\dagger = \left( 1+ iH + \frac{1}{2}(i H)^2 + ...\right)^\dagger \\
+&=& 1 - iH^\dagger  + \frac{1}{2}(-i)^2 (H^2)^\dagger + ... \\
+&=& 1 - iH +\frac{1}{2} H^2 - ... \\
+&=& e^{-iH}\\ \rule{0mm}{6mm}
+&=& U^{-1}
+\end{eqnarray}
+
+therefore, \$U\$ is unitary if and only if \$H\$ is Hermitian.
+
+    \#\#\# Euler operator formula
+
+\begin{quote}
+\begin{quote}
+Proof:
+\end{quote}
+\end{quote}
+
+\[
+\begin{align}
+e^{i\alpha A} &   = I + i\alpha A + \frac{1}{2} (i\alpha A)^2 + \frac{1}{3!}(i\alpha A)^3 + ...  \\
+    & = I  + i \alpha A - \frac{1}{2} \alpha^2 I - i\frac{1}{3!} \alpha^3 A + ... \\
+    & = \left(1  - \frac{1}{2} \alpha^2  + ...\right)I + i  \left(\alpha  -  \frac{1}{3!} \alpha^3  + ... \right)A \\
+    & = \cos \alpha I + i \sin\alpha A
+\end{align}    
+\]\\
+
+    \#\# General functions
+
+    No always \(F(z)\) is an analitic function around \(z_0\). For example
+\(f(z) = \exp(1/z)\) around \(z_0=0\). Hence, this function cannot be
+defined through its Taylor expansion.
+
+Still, if the function \(f(z)\) exists, \(f(A)\) will also exist. The
+proper way to define it is by resorting to the \emph{diagonalized form}
+of \(A\).
+
+    
+
+    In other words, if the matrix \(A^{(D)}_{ij} = \lambda_i \delta_{ij}\)
+is diagonal, any function of it is, trivially, the diagonal matrix
+obtained by evaluating \$f(\lambda\_i)\$
+
+\[
+f(A^{(D)}_{ij}) = \begin{bmatrix} f(\lambda_1)& &  & \\ & f(\lambda_2) & &  \\ & & \ddots & \\ & & & f(\lambda_n)\end{bmatrix}
+\]
+
+    Example 1:
+
+\[e^{1/A} = \sum_i e^{1/\lambda_i} \ket{\lambda_i}\bra{\lambda_i}\]
+
+    Example 2:
+
+\begin{eqnarray}
+{\rm tr}(A \log A) &=& {\rm tr}\left[\left(\sum_j \lambda_j \ket{\lambda_j}\bra{\lambda_j}\right)\left(\sum_k\log \lambda_k \ket{\lambda_k}\bra{\lambda_k}\right)\right] ~=~  {\rm tr}\left[\sum_k \lambda_k \log\lambda_k \ket{\lambda_k}\bra{\lambda_k} \right] \\ \rule{0mm}{20mm}
+&=& {\rm tr} \begin{bmatrix} \lambda_1 \log \lambda_1& &  & \\ &\lambda_2 \log \lambda_2 & &  \\ & & \ddots & \\ & & & \lambda_n \log \lambda_n
+\end{bmatrix}
+ ~= ~ \sum_k \lambda_k \log \lambda_k \rule{0mm}{8mm}
+\end{eqnarray}
+
+    \# Pauli matrices
+
+\hyperref[top]{<<<}
+
+    Hermitian matrices form a vector subspace
+\$\hbox{Her}(\Hil)\subset \Lin(\Hil)\$ that admits a basis of Hermitian
+matrices.
+
+    
+
+    Note: integer subscripts are also used. \(\sigma_1=\sigma_x, ~
+\sigma_2=\sigma_y\) y \(\sigma_3=\sigma_z\).
+
+    \begin{itemize}
+\tightlist
+\item
+  If we add the identity matrix
+  \(~~I = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}~~\), the set
+  \(\{I,\sigma_x,\sigma_y,\sigma_z \}\) forms a \emph{basis} for the
+  space of \emph{Hermitian matrices} \$2\times 2\$.
+\end{itemize}
+
+\begin{eqnarray}
+A = a_0 I + {\bf a} \cdot \boldsymbol{\sigma}  &=&   a_0 I + a_1 \sigma_1 + a_2 \sigma_2 + a_3 \sigma_3  = 
+\begin{bmatrix}
+a_0 + a_3 & a_1 - i a_2 \\ a_1 + i a_2 & a_0 - a_3
+\end{bmatrix} = A^\dagger
+\end{eqnarray} with \(a_\mu = (a_0, a_1, a_2, a_3) \in {\mathbb R}\)
+four real numbers
+
+    \begin{itemize}
+\item
+  Pauli matrices enjoy three properties that make them rather unique
+
+  \begin{itemize}
+  \item
+    hermiticity \(\sigma_i^\dagger = \sigma_i\)
+  \item
+    unitarity \(\sigma_i^\dagger = \sigma_i^{-1} = \sigma_i\)
+  \item
+    traceless \(\tr(\sigma_i) = 0\)
+  \end{itemize}
+\end{itemize}
+
+    \#\# Pauli algebra
+
+The composition of two Pauli matrices is another Pauli matrix that
+satisfies the following identity
+
+\[
+\sigma_i \sigma_j = \delta_{ij}I + i\epsilon_{ijk}  \sigma_k
+\] where
+
+\[\epsilon_{123} = \epsilon_{231}=\epsilon_{312}=1~~~~,~~~~\epsilon_{213} = \epsilon_{132}=\epsilon_{321}=-1\]
+
+    Examples:
+
+\begin{eqnarray}
+\sigma_1\sigma_2 &=& i \sigma_3  \\
+\sigma_2\sigma_1 &=& -i \sigma_3  \\
+\sigma_2\sigma_1\sigma_2 &=& \sigma_2(i\sigma_3) = i^2 \sigma_1 = -\sigma_1\\
+\sigma_2\sigma_2 &=& I
+\end{eqnarray}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{s0} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{matrix}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+\PY{n}{s1} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{matrix}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+\PY{n}{s2} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{matrix}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{n}{j}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{1}\PY{n}{j}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+\PY{n}{s3} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{matrix}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+
+
+\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{verify all the options}\PY{l+s+s1}{\PYZsq{}}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{s1}\PY{o}{*}\PY{n}{s1}\PY{o}{==}\PY{n}{s0}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{s1}\PY{o}{*}\PY{n}{s2}\PY{o}{==}\PY{l+m+mi}{1}\PY{n}{j}\PY{o}{*}\PY{n}{s3}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{s2}\PY{o}{*}\PY{n}{s1}\PY{o}{==}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{n}{j}\PY{o}{*}\PY{n}{s3}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{s2}\PY{o}{*}\PY{n}{s1}\PY{o}{*}\PY{n}{s2}\PY{o}{==}\PY{o}{\PYZhy{}}\PY{n}{s1}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{s1}\PY{o}{*}\PY{n}{s1}\PY{o}{==}\PY{n}{s0}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[[ True  True]
+ [ True  True]]
+[[ True  True]
+ [ True  True]]
+[[ True  True]
+ [ True  True]]
+[[ True  True]
+ [ True  True]]
+[[ True  True]
+ [ True  True]]
+    \end{Verbatim}
+
+    Notes: from the previous composition relations the following
+(anti)commutation rules immediately follow
+
+\[
+\{\sigma_i,\sigma_j \} = 2\delta_{ij}~~~~~~~,~~~~~~~
+~~~[\sigma_i,\sigma_j] = 2i\epsilon_{ijk}\sigma_k
+\]
+
+    Taking the trace of the composition relation we obtain
+
+\[
+{\rm tr}(\sigma_i\sigma_j) = {\rm tr}(\delta_{ij}I + i\epsilon_{ijk}  \sigma_k)  = 
+\delta_{ij} \, {\rm tr}  I + i\epsilon_{ijk} \, {\rm tr} \sigma_k  = 2\delta_{ij}
+\]
+
+    This allows to endow the algebra of Pauli mátrices with a scalar
+product, under which they are orthonormal
+
+\[
+(\sigma_i, \sigma_j) \equiv \frac{1}{2} {\rm tr}(\sigma_i\sigma_j)  =  \delta_{ij}
+\]
+
+This can be enhanced to the set
+\(\sigma_\mu = (\sigma_0, \sigma_1, \sigma_2, \sigma_3)\) as
+
+\[
+(\sigma_\mu, \sigma_\nu) \equiv \frac{1}{2} {\rm tr}(\sigma_\mu\sigma_\nu)  =  \delta_{\mu\nu}
+\]
+
+    So if \(A = \sum_\mu a_\mu \sigma_\mu\) we may recover the coefficients
+\(a_\mu\) thanks to this scalar product
+
+\begin{eqnarray}
+(A, \sigma_\mu) &=& \frac{1}{2} \tr\, A \sigma_\mu   =  \frac{1}{2} \tr \big(\sum_\nu a_\mu \sigma_\nu \big) \sigma_\mu \\
+&=& \sum_\nu a_\nu \frac{1}{2}\tr \, (\sigma_\mu \sigma_\nu)  =  \sum_\nu a_\nu \delta_{\nu\mu} \\
+&=& a_\mu
+\end{eqnarray}
+
+    \subsection{Exponentiation}\label{exponentiation}
+
+    Let us consider the most general \(2\times 2\) Hermitian matrix
+
+\begin{eqnarray}
+A &=& a_0 I + {\bf a} \cdot \boldsymbol{\sigma} 
+\end{eqnarray} with \(a_\mu\in {\mathbb R}\) .
+
+We would like to find an analytic expression for \(e^{iA}\) in terms of
+\(~~
+(a_0,{\bf a})\)
+
+    Separate \$\{\bf a\}\$ into a modulus,
+\(a=|{\bf a}|=\sqrt{a_1^2+a_2^3+a_3^2}~\), and a unit direction vector
+\(\hat{\bf n} = {\bf a}/a\)
+
+\[{\bf a} = (a_1,a_2,a_3) = a \left( \frac{a_1}{a},\frac{a_2}{a},\frac{a_3}{a}\right) =  a\, \hat{\bf n}\]
+
+Then
+
+\[
+A = a_0 I +  {\bf a} \cdot \boldsymbol{\sigma} =  a_0 I + a\, (\hat{\bf n} \cdot \boldsymbol{\sigma})
+\]
+
+    
+
+    \emph{Proof:}
+
+The operator \$ \hat{\bf n}\cdot  \boldsymbol{\sigma}\$ verifies
+\(\big(\hat{\bf n}\cdot  \boldsymbol{\sigma}\big)^2 = I\). Let us check
+\[
+(\hat{\bf n} \cdot \boldsymbol{\sigma})^2 = n_i n_j \sigma_i \sigma_j =
+n_i n_j (\delta_{ij} I + i \epsilon_{ijk} \sigma_k) = \sum_i (n_i)^2 I 
+\]\\
+since \(n_in_j\) is symmetric under exchange of \(i,j\) while
+\(\epsilon_{ijk}\) is antisymmetric. The lemma follows from a previous
+theorem for the \hyperref[euler_op]{Euler operator formula}.
+
+    This generalizes Euler's formula for a complex phase.
+
+\[ e^{i\alpha} = \cos\alpha + i \sin\alpha \]
+
+    The final expression for
+
+\[
+e^{iA} = e^{i(a_0 I + {\bf a} \cdot \boldsymbol{\sigma}) } = e^{i\alpha_0} \big(\cos a\, I + i \sin a \,(\hat{\bf n} \cdot  \boldsymbol{\sigma}) \big)
+\]
+
+    Exercise 1.3.12
+
+Obtain the spectral decomposition of the three Pauli matrices,
+\$\sigma\_x, \sigma\_y\$ and \$\sigma\_z\$.
+
+Use this decomposition to prove that
+
+\[
+e^{i \alpha\,  {\bf n}\cdot\boldsymbol{\sigma}} = \cos \alpha \, I + i \sin \alpha \, {\bf n}\cdot\boldsymbol{\sigma}
+\]
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{linalg}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{expm}
+
+
+\PY{n}{avec} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}
+\PY{n}{a} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{avec}\PY{p}{)}
+\PY{n}{nvec} \PY{o}{=} \PY{n}{avec}\PY{o}{/}\PY{n}{a}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a=}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{a}\PY{p}{)}
+\PY{n}{display}\PY{p}{(}\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{nvec}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{sigvec} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{s1}\PY{p}{,}\PY{n}{s2}\PY{p}{,}\PY{n}{s3}\PY{p}{]}\PY{p}{)}
+
+
+\PY{n}{adots}\PY{o}{=} \PY{n+nb}{sum}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{avec}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{*}\PY{n}{sigvec}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{exponentiating}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{e1} \PY{o}{=} \PY{n}{expm}\PY{p}{(}\PY{l+m+mi}{1}\PY{n}{j}\PY{o}{*}\PY{n}{adots}\PY{p}{)}
+
+\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{using the Euler\PYZhy{}like formula}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{ndots}\PY{o}{=} \PY{n+nb}{sum}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{nvec}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{*}\PY{n}{sigvec}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n}{e2} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{cos}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{o}{*}\PY{n}{s0} \PY{o}{+} \PY{l+m+mi}{1}\PY{n}{j}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{sin}\PY{p}{(}\PY{n}{a}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{n}{nvec}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{*}\PY{n}{sigvec}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{+}\PY{n}{nvec}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{*}\PY{n}{sigvec}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{+}\PY{n}{nvec}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{*}\PY{n}{sigvec}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}
+
+\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{verify}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{display}\PY{p}{(}\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{e1}\PY{p}{,}\PY{n}{prefix}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{exp(s1)=}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+\PY{n}{display}\PY{p}{(}\PY{n}{array\PYZus{}to\PYZus{}latex}\PY{p}{(}\PY{n}{e2}\PY{p}{,}\PY{n}{prefix}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{exp(s1)=}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+a= 1.193860017140821
+    \end{Verbatim}
+
+    $$
+
+\begin{bmatrix}
+0.3633607915 & 0.4809988904 & 0.7978778118  \\
+ \end{bmatrix}
+$$
+
+    
+    $$
+exp(s1)=
+\begin{bmatrix}
+0.3680735922 + 0.7418641253 i & 0.4472311622 + 0.3378516507 i  \\
+ -0.4472311622 + 0.3378516507 i & 0.3680735922 - 0.7418641253 i  \\
+ \end{bmatrix}
+$$
+
+    
+    $$
+exp(s1)=
+\begin{bmatrix}
+0.3680735922 + 0.7418641253 i & 0.4472311622 + 0.3378516507 i  \\
+ -0.4472311622 + 0.3378516507 i & 0.3680735922 - 0.7418641253 i  \\
+ \end{bmatrix}
+$$
+
+    
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
